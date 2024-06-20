@@ -13,13 +13,10 @@ class SortByTimeToHappen implements Comparator<Event> {
 // main
 public class App {
     public static void main(String[] args) throws Exception {
-        int time = 0; // tiempo actual
-        final int TIME_LIMIT = 20; // tiempo limite de simulación
-
-        // generador de numeros aleatorios con semilla
         int seed = 43;
-        // TODO cambiar el lambda a uno con sentido y luego comprobar si los numeros generados son exponenciales
-        Exponential exp = new Exponential(1, seed);
+        int lambda = 1;
+        int TIME_LIMIT = 100; // tiempo limite de simulación // TODO puede ser por args o del archivo de configuración
+        int time = 0; // tiempo actual
 
         /* //comprobar generador de numeros aleatorios
         double lista1[] = new double[1000];
@@ -32,15 +29,9 @@ public class App {
             System.out.println(lista1[i] + ", ");
         } */
 
-        // TODO determinar si el generador de numeros aleatorios es correcto
         
-        // cola de prioridad para eventos futuros
-        // hace las veces de lista de eventos futuros
-        PriorityQueue<Event> futureEvents = new PriorityQueue<Event>(new SortByTimeToHappen());
-
-        // TODO Insertar eventos de prueba
-        futureEvents.add(new Event(1, 1, 0, 5, "Crear tropa"));
-        futureEvents.add(new Event(2, 2, 5, 0, "Recolectar recursos"));
+        Simulation sim = new Simulation(seed, lambda);
+        sim.addEvent(new Event(0, 0, 0, 5, "Entrenar tropas"));
 
         // simulamos el tiempo
         char response = ' ';
@@ -49,16 +40,13 @@ public class App {
         Scanner scanner = new Scanner(System.in);
 
         while (time < TIME_LIMIT) {
-            // revisar si hay eventos que deben ocurrir en este instante
-            while (!futureEvents.isEmpty() && futureEvents.peek().getTimeToHappen() == time) {
-                Event event = futureEvents.poll();
-                System.out.println("Ejecutando evento: " + event.getDescription());
-            }
+            // ejecutar eventos que deben ocurrir en este instante
+            sim.runEvents(time);
 
             // Con el generador de numeros aleatorios, determinar si se generará un nuevo evento
             
             // leer el siguiente evento
-            Event futuro = futureEvents.peek();
+            Event futuro = sim.peekEvent();
 
             // TODO esto se puede hacer más bonito, imprimiendo dos columnas
 
@@ -94,10 +82,10 @@ public class App {
             
             switch (response) {
                 case 'n':
-                    if (futureEvents.isEmpty()) {
+                    if (sim.eventsEmpty()) {
                         System.out.println("No hay eventos futuros");
                     } else {
-                        time = futureEvents.peek().getTimeToHappen();
+                        time = sim.getTimeToNextEvent();
                     }
                     break;
                 case 'q':
