@@ -2,26 +2,22 @@ package Aldea.Tropas;
 
 public class Laboratorio {
     
-        int capacidad_maxima;
-        int cantidad_tropas;
+        int capacidadMaxima;
+        int cantidadTropas;
 
         public Laboratorio(){
-
-            this.capacidad_maxima=1;
-            this.cantidad_tropas=0;
-
+            this.capacidadMaxima=1;
+            this.cantidadTropas=0;
         }
 
-        public void Ingresar(){
-            int entrada = this.cantidad_tropas + 1;
-            if(this.capacidad_maxima<entrada){
-                this.cantidad_tropas= entrada;
+        public void ingresar(){
+            int entrada = this.cantidadTropas + 1;
+            if(this.capacidadMaxima<entrada){
+                this.cantidadTropas= entrada;
             }
         }
 
-        public void Eliminar(){
-            this.cantidad_tropas-=1;
+        public void eliminar(){
+            this.cantidadTropas-=1;
         }
-
-        
 }

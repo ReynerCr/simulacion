@@ -3,53 +3,53 @@ package Aldea.Recolectores;
 public class Extractor {
     
     int nivel;
-    int tasa_produccion_elixir;
-    int capacidad_maxima;
-    int elixir_recolectado;
-    int tasa_de_perdida;
+    int tasaProduccionElixir;
+    int capacidadMaxima;
+    int elixirRecolectado;
+    int tasaPerdida;
 
-    public Extractor(int tasa_produccion_elixir){
-        this.tasa_produccion_elixir = tasa_produccion_elixir;
-        this.capacidad_maxima = 10;
-        this.elixir_recolectado = 0;
-        this.tasa_produccion_elixir = 1;
+    public Extractor(int tasaProduccionElixir){
+        this.tasaProduccionElixir = tasaProduccionElixir;
+        this.capacidadMaxima = 10;
+        this.elixirRecolectado = 0;
+        this.tasaProduccionElixir = 1;
     }
 
-    public void Producir(){
-        int entrada = this.tasa_produccion_elixir +this.elixir_recolectado;
-        if(capacidad_maxima < entrada){
-            this.elixir_recolectado = entrada;
+    public void producir(){
+        int entrada = this.tasaProduccionElixir +this.elixirRecolectado;
+        if(capacidadMaxima >= entrada){
+            this.elixirRecolectado = entrada;
         }
     }
 
-    public void Upgrade(){
+    public void upgrade(){
         this.nivel = this.nivel + 1;
-        this.tasa_produccion_elixir = this.tasa_produccion_elixir + (this.nivel * 2);
-        this.capacidad_maxima = this.capacidad_maxima + (this.nivel * 5);
-        this.tasa_de_perdida = this.tasa_de_perdida + (this.tasa_de_perdida * 2);
+        this.tasaProduccionElixir = this.tasaProduccionElixir + (this.nivel * 2);
+        this.capacidadMaxima = this.capacidadMaxima + (this.nivel * 5);
+        this.tasaPerdida = this.tasaPerdida + (this.tasaPerdida * 2);
     }
 
-    public void Perder(){
-        this.elixir_recolectado= this.elixir_recolectado - this.tasa_de_perdida;
+    public void perder(){
+        this.elixirRecolectado= this.elixirRecolectado - this.tasaPerdida;
     }
-    public void Vaciar(){
-        this.elixir_recolectado=0;
+    public void vaciar(){
+        this.elixirRecolectado=0;
     }
 
-    public void SetNivel(int nivel){ this.nivel=nivel;}
+    public void setNivel(int nivel){ this.nivel=nivel;}
 
-    public void Settasa_produccion_elixir(int tasa_produccion_elixir){ this.tasa_produccion_elixir=tasa_produccion_elixir; }
+    public void setTasaProduccionElixir(int tasaProduccionElixir){ this.tasaProduccionElixir=tasaProduccionElixir; }
 
-    public void Setcapacidad_maxima(int capacidad_maxima){ this.capacidad_maxima = capacidad_maxima; }
+    public void setCapacidadMaxima(int capacidadMaxima){ this.capacidadMaxima = capacidadMaxima; }
 
-    public void Setelixir_recolectado(int elixir_recolectado){ this.elixir_recolectado = elixir_recolectado; }
+    public void setElixirRecolectado(int elixirRecolectado){ this.elixirRecolectado = elixirRecolectado; }
 
-    public int GetNivel(){ return this.nivel;}
+    public int getNivel(){ return this.nivel;}
 
-    public int Gettasa_produccion_elixir(){ return this.tasa_produccion_elixir;}
+    public int getTasaProduccionElixir(){ return this.tasaProduccionElixir;}
 
-    public int Getcapacidad_maxima(){ return this.capacidad_maxima;}
+    public int getCapacidadMaxima(){ return this.capacidadMaxima;}
 
-    public int Getelixir_recolecta(){ return this.elixir_recolectado;}
+    public int getElixirRecolectado(){ return this.elixirRecolectado;}
 
 }

@@ -1,46 +1,43 @@
 package Aldea.Almacen;
 
 public class AlmacenElixir {
-    
     int max;
     int nivel;
     int acum;
-    int tasa_de_perdida;
+    int tasaPerdida;
 
     public AlmacenElixir(){
         this.max=10;
         this.nivel=1;
         this.acum=0;
-        this.tasa_de_perdida=1;
+        this.tasaPerdida=1;
     }
 
-    public void Perder(){
-        this.acum = this.acum - (this.max * ((this.tasa_de_perdida)/10));
+    public void perder(){
+        this.acum = this.acum - (this.max * ((this.tasaPerdida)/10));
     }
 
-    public void Almacenar(int cantidadElixir){
-        
+    public void almacenar(int cantidadElixir){
         int entrada = this.acum + cantidadElixir;
 
-        if(max < entrada){
+        if(max > entrada){
             this.acum=entrada;
+        } else {
+            this.acum=max;
         }
     }
 
-    public void Upgrade(AlmacenOro almacen){
-        
+    public void upgrade(AlmacenOro almacen){
         int precio = this.nivel * 10;
 
-        if(almacen.Consumir(precio)){
+        if(almacen.consumir(precio)){
             this.nivel = this.nivel + 1;
             this.max = this.max + (this.nivel * 5);
-            this.tasa_de_perdida = tasa_de_perdida + 1;
+            this.tasaPerdida = tasaPerdida + 1;
         }
-
     }
 
-    public boolean Consumir(int cantidadElixir){
-
+    public boolean consumir(int cantidadElixir){
         if(cantidadElixir > this.acum){
             return false;
         }
@@ -48,20 +45,12 @@ public class AlmacenElixir {
             this.acum = this.acum - cantidadElixir;
             return true;
         }
-
     }
 
-    public int GetMax(){ return this.max;}
-
-    public int GetNivel(){ return this.nivel;}
-
-    public int GetAcum(){ return this.acum;}
-
-    public void SetMax(int max){ this.max=max;}
-
-    public void SetNivel(int nivel){ this.nivel=nivel;}
-
-    public void SetAcum(int acum){ this.acum=acum;}
-
-
+    public int getMax(){ return this.max;}
+    public int getNivel(){ return this.nivel;}
+    public int getAcum(){ return this.acum;}
+    public void setMax(int max){ this.max=max;}
+    public void setNivel(int nivel){ this.nivel=nivel;}
+    public void setAcum(int acum){ this.acum=acum;}
 }

@@ -16,7 +16,7 @@ public class App {
         int seed = 43;
         int lambda = 1;
         int TIME_LIMIT = 100; // tiempo limite de simulación // TODO puede ser por args o del archivo de configuración
-        int time = 0; // tiempo actual
+         // tiempo actual
 
         /* //comprobar generador de numeros aleatorios
         double lista1[] = new double[1000];
@@ -29,8 +29,9 @@ public class App {
             System.out.println(lista1[i] + ", ");
         } */
 
-        
-        Simulation sim = new Simulation(seed, lambda);
+        int initTime = 0;
+
+        Simulation sim = new Simulation(initTime, TIME_LIMIT, seed, lambda);
         sim.addEvent(new Event(0, 0, 0, 5, "Entrenar tropas"));
 
         // simulamos el tiempo
@@ -39,21 +40,18 @@ public class App {
         // scaner
         Scanner scanner = new Scanner(System.in);
 
-        while (time < TIME_LIMIT) {
+        while (sim.getTime() < TIME_LIMIT) {
             // ejecutar eventos que deben ocurrir en este instante
-            sim.runEvents(time);
+            sim.runEvents();
 
             // Con el generador de numeros aleatorios, determinar si se generará un nuevo evento
             
             // leer el siguiente evento
-            Event futuro = sim.peekEvent();
-
             // TODO esto se puede hacer más bonito, imprimiendo dos columnas
 
             // TODO mostrar el estado del sistema
-            System.out.println("Tiempo: " + time);
-            System.out.println("Siguiente evento: " + (futuro == null ? "Ninguno" : futuro.getDescription() + " en " + (futuro.getTimeToHappen() - time) + " segundos"));
-            // TODO mostrar el estado de las aldeas, edificios, defensas y tropas
+            // mostrar el estado de las aldeas, edificios, defensas y tropas
+            sim.printStatus();
 
             // Instrucciones para el usuario
             if (response != 'o') {
@@ -65,6 +63,7 @@ public class App {
                 System.out.println("Presione 'e' para mejorar un edificio");
                 System.out.println("Presione 'd' para mejorar una defensa");
                 System.out.println("Presione 'b' para entrenar un bárbaro");
+                System.out.println("Presione 'r' para recolectar recursos");
                 System.out.println("Presione 'q' para salir de la simulación");
             }
            
@@ -85,14 +84,17 @@ public class App {
                     if (sim.eventsEmpty()) {
                         System.out.println("No hay eventos futuros");
                     } else {
-                        time = sim.getTimeToNextEvent();
+                        sim.skipToNextEvent();
                     }
                     break;
                 case 'q':
-                    time = TIME_LIMIT;
+                    sim.endSimulation();
                     break;
                 case 'j':
-                    time++;
+                    sim.advanceOneStep();
+                    break;
+                case 'r':
+                    sim.aldeaRecolectar();
                     break;
                 case 'a':
                     // TODO atacar otra aldea
@@ -107,7 +109,7 @@ public class App {
                     // TODO entrenar un bárbaro
                     break;
                 case 'o':
-                    ++time;
+                    sim.advanceOneStep();
                     Thread.sleep(1000);
                     break;
                 default:

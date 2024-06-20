@@ -1,58 +1,56 @@
 package Aldea.Recolectores;
 
 public class Mina {
-    
     int nivel;
-    int tasa_produccion_oro;
-    int capacidad_maxima;
-    int oro_recolectado;
-    int tasa_de_perdida;
+    int tasaProduccionOro;
+    int capacidadMaxima;
+    int oroRecolectado;
+    int tasaPerdida;
 
-    public Mina(int tasa_produccion_oro){
-        this.tasa_produccion_oro = tasa_produccion_oro;
+    public Mina(int tasaProduccionOro){
+        this.tasaProduccionOro = tasaProduccionOro;
         this.nivel = 1;
-        this.capacidad_maxima = 10;
-        this.oro_recolectado = 0;
-        this.tasa_de_perdida= 1;     
+        this.capacidadMaxima = 10;
+        this.oroRecolectado = 0;
+        this.tasaPerdida= 1;     
     }
-
   
-    public void Producir(){
-        int entrada = this.tasa_produccion_oro +this.oro_recolectado;
-        if(capacidad_maxima < entrada){
-            this.oro_recolectado = entrada;
+    public void producir(){
+        int entrada = this.tasaProduccionOro + this.oroRecolectado;
+        System.out.println(entrada);
+        if(capacidadMaxima >= entrada){
+            this.oroRecolectado = entrada;
         }
     }
 
-    public void Perder(){
-        this.oro_recolectado = this.oro_recolectado - this.tasa_de_perdida;
+    public void perder(){
+        this.oroRecolectado = this.oroRecolectado - this.tasaPerdida;
     }
     
-    public void Upgrade(){
+    public void upgrade(){
         this.nivel = this.nivel + 1;
-        this.tasa_produccion_oro = this.tasa_produccion_oro + (this.nivel * 2);
-        this.capacidad_maxima = this.capacidad_maxima + (this.nivel * 5);
-        this.tasa_de_perdida = this.tasa_de_perdida + this.tasa_de_perdida * 2;
+        this.tasaProduccionOro = this.tasaProduccionOro + (this.nivel * 2);
+        this.capacidadMaxima = this.capacidadMaxima + (this.nivel * 5);
+        this.tasaPerdida = this.tasaPerdida + this.tasaPerdida * 2;
     }
 
-    public void Vaciar(){
-        this.oro_recolectado=0;
+    public void vaciar(){
+        this.oroRecolectado=0;
     }
 
-    public void SetNivel(int nivel){ this.nivel=nivel;}
+    public void setNivel(int nivel){ this.nivel=nivel;}
 
-    public void Settasa_produccion_oro(int tasa_produccion_oro){ this.tasa_produccion_oro=tasa_produccion_oro; }
+    public void setTasaProduccionOro(int tasaProduccionOro){ this.tasaProduccionOro=tasaProduccionOro; }
 
-    public void Setcapacidad_maxima(int capacidad_maxima){ this.capacidad_maxima = capacidad_maxima; }
+    public void setCapacidadMaxima(int capacidadMaxima){ this.capacidadMaxima = capacidadMaxima; }
 
-    public void Setoro_recolectado(int oro_recolectado){ this.oro_recolectado = oro_recolectado; }
+    public void setOroRecolectado(int oroRecolectado){ this.oroRecolectado = oroRecolectado; }
 
-    public int GetNivel(){ return this.nivel;}
+    public int getNivel(){ return this.nivel;}
 
-    public int GetTasa(){ return this.tasa_produccion_oro;}
+    public int getTasa(){ return this.tasaProduccionOro;}
 
-    public int Getcapacidad_maxima(){ return this.capacidad_maxima;}
+    public int getCapacidadMaxima(){ return this.capacidadMaxima;}
 
-    public int Getoro_recolectado(){ return this.capacidad_maxima;}
-
+    public int getOroRecolectado(){ return this.oroRecolectado;}
 }

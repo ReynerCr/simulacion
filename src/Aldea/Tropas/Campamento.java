@@ -2,44 +2,44 @@ package Aldea.Tropas;
 
 public class Campamento {
 
-        int capacidad_maxima;
-        int cantidad_actual_campamento;
-        int nivel_campamento;
-        int nivel_ataque;
+        int capacidadMaxima;
+        int cantidadActualCampamento;
+        int nivelCampamento;
+        int nivelAtaque;
 
         public Campamento(){
-            this.capacidad_maxima=10;
-            this.cantidad_actual_campamento=0;
-            this.nivel_campamento=1;
-            this.nivel_ataque=0;
+            this.capacidadMaxima=10;
+            this.cantidadActualCampamento=0;
+            this.nivelCampamento=1;
+            this.nivelAtaque=0;
         }
 
-        public void Agregar(Cuartel cuartel){
-            int entrada = cantidad_actual_campamento + 1;
+        public void agregar(Cuartel cuartel){
+            int entrada = cantidadActualCampamento + 1;
 
-            if(capacidad_maxima<entrada){
-               this.cantidad_actual_campamento+=1;
-               cuartel.DisminuirCola(); 
+            if(capacidadMaxima<entrada){
+               this.cantidadActualCampamento+=1;
+               cuartel.disminuirCola(); 
             }
         }
 
-        public void Vaciar(){
-            this.cantidad_actual_campamento = 0;
+        public void vaciar(){
+            this.cantidadActualCampamento = 0;
         }
 
-        public void GetCapacidad_Maxima(int capacidad_maxima){ this.capacidad_maxima = capacidad_maxima;}
+        public void getCapacidadMaxima(int capacidadMaxima){ this.capacidadMaxima = capacidadMaxima;}
 
-        public void GetCantidad_Actual_Campamento(int cantidad_actual_campamento){ this.cantidad_actual_campamento = cantidad_actual_campamento;}
+        public void getCantidadActualCampamento(int cantidadActualCampamento){ this.cantidadActualCampamento = cantidadActualCampamento;}
 
-        public void GetNivel_Campamento(int nivel_campamento){this.nivel_campamento = nivel_campamento;}
+        public void getNivelCampamento(int nivelCampamento){this.nivelCampamento = nivelCampamento;}
 
-        public void Get_Nivel_Ataque(int nivel_ataque){ this.nivel_ataque = nivel_ataque;}
+        public void getNivelAtaque(int nivelAtaque){ this.nivelAtaque = nivelAtaque;}
 
-        public int Set_Capacidad_Maxima(){ return this.capacidad_maxima;}
+        public int setCapacidadMaxima(){ return this.capacidadMaxima;}
 
-        public int Set_Cantidad_Actual_Campamento(){ return this.cantidad_actual_campamento;}
+        public int setCantidadActualCampamento(){ return this.cantidadActualCampamento;}
 
-        public int Set_Nivel_Campamento(){ return this.nivel_campamento;}
+        public int setNivelCampamento(){ return this.nivelCampamento;}
 
-        public int Set_Nivel_Ataque(){ return this.nivel_ataque;}
+        public int setNivelAtaque(){ return this.nivelAtaque;}
 }

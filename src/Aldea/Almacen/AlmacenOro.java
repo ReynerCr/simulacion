@@ -1,7 +1,6 @@
 package Aldea.Almacen;
 
 public class AlmacenOro {
-    
     int max;
     int nivel;
     int acum;
@@ -12,28 +11,27 @@ public class AlmacenOro {
         this.acum=0;
     }
 
-    public void Almacenar(int cantidadOro){
+    public void almacenar(int cantidadOro){
         
         int entrada = this.acum + cantidadOro;
 
-        if(max < entrada){
+        if(max > entrada){
             this.acum=entrada;
+        } else {
+            this.acum=max;
         }
     }
 
-    public void Upgrade(AlmacenElixir almacen){
-        
+    public void upgrade(AlmacenElixir almacen){
         int precio = this.nivel * 10;
 
-        if(almacen.Consumir(precio)){
+        if(almacen.consumir(precio)){
             this.nivel = this.nivel + 1;
             this.max = this.max + (this.nivel * 5);
         }
-
     }
 
-    public boolean Consumir(int cantidadOro){
-
+    public boolean consumir(int cantidadOro){
         if(cantidadOro > this.acum){
             return false;
         }
@@ -41,19 +39,12 @@ public class AlmacenOro {
             this.acum = this.acum - cantidadOro;
             return true;
         }
-
     }
 
-    public int GetMax(){ return this.max;}
-
-    public int GetNivel(){ return this.nivel;}
-
-    public int GetAcum(){ return this.acum;}
-
-    public void SetMax(int max){ this.max=max;}
-
-    public void SetNivel(int nivel){ this.nivel=nivel;}
-
-    public void SetAcum(int acum){ this.acum=acum;}
-
+    public int getMax(){ return this.max;}
+    public int getNivel(){ return this.nivel;}
+    public int getAcum(){ return this.acum;}
+    public void setMax(int max){ this.max=max;}
+    public void setNivel(int nivel){ this.nivel=nivel;}
+    public void setAcum(int acum){ this.acum=acum;}
 }

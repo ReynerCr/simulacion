@@ -2,47 +2,47 @@ package Aldea.Defensas;
 
 public class Defensas {
     
-    private int cantidad_defensas;
-    private int nivel_de_defensa;
-    private int capacidad_de_defensa;
+    private int cantidadDefensas;
+    private int nivelDefensa;
+    private int capacidadDefensa;
 
     public Defensas(){
-        this.cantidad_defensas=1;
-        this.nivel_de_defensa=1;
-        this.capacidad_de_defensa=1;
+        this.cantidadDefensas=1;
+        this.nivelDefensa=1;
+        this.capacidadDefensa=1;
     }
 
-    public void Upgrade(){
-        this.nivel_de_defensa+=1;
-        this.capacidad_de_defensa = this.nivel_de_defensa * 10;
-        this.cantidad_defensas = this.nivel_de_defensa * 10;
+    public void upgrade(){
+        this.nivelDefensa+=1;
+        this.capacidadDefensa = this.nivelDefensa * 10;
+        this.cantidadDefensas = this.nivelDefensa * 10;
     }
 
-    public void Aumentar(){
-        this.capacidad_de_defensa +=1;
+    public void aumentar(){
+        this.capacidadDefensa +=1;
     }
 
-    public void SetCantidadDefensas(int cantidad_defensa){
-        this.cantidad_defensas = cantidad_defensa;
+    public void setCantidadDefensas(int cantidadDefensa){
+        this.cantidadDefensas = cantidadDefensa;
        }
     
-    public void SetNivelDefensa(int nivel_de_defensa){
-        this.nivel_de_defensa = nivel_de_defensa;
+    public void setNivelDefensa(int nivelDefensa){
+        this.nivelDefensa = nivelDefensa;
     }
 
-    public void SetCapacidadDefensa(int capacidad_de_defensa){
-        this.capacidad_de_defensa = capacidad_de_defensa;
+    public void setCapacidadDefensa(int capacidadDefensa){
+        this.capacidadDefensa = capacidadDefensa;
     }
 
-    public int GetCantidadDefensas(){
-        return this.cantidad_defensas;
+    public int getCantidadDefensas(){
+        return this.cantidadDefensas;
     }
 
-    public int GetNivelDefensas(){
-        return this.nivel_de_defensa;
+    public int getNivelDefensas(){
+        return this.nivelDefensa;
     }
 
-    public int GetCapacidadDefensa(){
-        return this.capacidad_de_defensa;
+    public int getCapacidadDefensa(){
+        return this.capacidadDefensa;
     }
 }
