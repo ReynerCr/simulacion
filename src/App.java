@@ -43,7 +43,7 @@ public class App {
         futureEvents.add(new Event(2, 2, 5, 0, "Recolectar recursos"));
 
         // simulamos el tiempo
-        char response;
+        char response = ' ';
 
         // scaner
         Scanner scanner = new Scanner(System.in);
@@ -60,25 +60,35 @@ public class App {
             // leer el siguiente evento
             Event futuro = futureEvents.peek();
 
+            // TODO esto se puede hacer más bonito, imprimiendo dos columnas
+
             // TODO mostrar el estado del sistema
-            System.out.println("Time: " + time);
+            System.out.println("Tiempo: " + time);
             System.out.println("Siguiente evento: " + (futuro == null ? "Ninguno" : futuro.getDescription() + " en " + (futuro.getTimeToHappen() - time) + " segundos"));
             // TODO mostrar el estado de las aldeas, edificios, defensas y tropas
 
             // Instrucciones para el usuario
-            System.out.println("Presione 'n' para avanzar al siguiente evento");
-            System.out.println("Presione 'q' para salir de la simulación");
-            System.out.println("Presione 'j' para avanzar un segundo");
-            System.out.println("Presione 'a' para atacar otra aldea");
-            System.out.println("Presione 'e' para mejorar un edificio");
-            System.out.println("Presione 'd' para mejorar una defensa");
-            System.out.println("Presione 'b' para entrenar un bárbaro");
-
+            if (response != 'o') {
+                System.out.println("Instrucciones:");
+                System.out.println("Presione 'o' para avance automático (se ignorarán las intrucciones siguientes)");
+                System.out.println("Presione 'n' para avanzar al siguiente evento");
+                System.out.println("Presione 'j' para avanzar un segundo");
+                System.out.println("Presione 'a' para atacar otra aldea");
+                System.out.println("Presione 'e' para mejorar un edificio");
+                System.out.println("Presione 'd' para mejorar una defensa");
+                System.out.println("Presione 'b' para entrenar un bárbaro");
+                System.out.println("Presione 'q' para salir de la simulación");
+            }
+           
             // Tomamos input y ejecutamos la acción correspondiente
             try {
-                response = scanner.next().charAt(0);
+                if (response != 'o') {
+                    response = scanner.next().charAt(0);
+                }
             } catch (Exception e) {
                 System.out.println("Error al leer la entrada");
+                scanner.nextLine();
+                System.out.flush();
                 response = ' ';
             }
             
@@ -108,15 +118,17 @@ public class App {
                 case 'b':
                     // TODO entrenar un bárbaro
                     break;
+                case 'o':
+                    ++time;
+                    Thread.sleep(1000);
+                    break;
                 default:
                     System.out.println("Comando no reconocido");
                     break;
             }
 
-            // limpiar el buffer y pantalla
-            scanner.nextLine();
+            // limpiar pantalla
             System.out.println("\033[H\033[2J");
-            System.out.flush();
         }
 
         scanner.close();
