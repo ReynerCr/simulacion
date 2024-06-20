@@ -1,74 +1,137 @@
-import java.util.TreeMap;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.Scanner;
 
+// Clase comparadora para ordenar eventos por tiempo de ocurrencia
+class SortByTimeToHappen implements Comparator<Event> {
+    public int compare(Event a, Event b)
+    {
+        return a.timeToHappen - b.timeToHappen;
+    }
+}
+
+// main
 public class App {
     public static void main(String[] args) throws Exception {
-        int time = 0;
-        final int TIME_LIMIT = 20;
+        int time = 0; // tiempo actual
+        final int TIME_LIMIT = 20; // tiempo limite de simulación
 
-        // lista de eventos futuros: mantiene orden por tiempo de ocurrencia y mantiene muchos eventos con el mismo tiempo en un array
-        TreeMap<Integer, Event> futureEvents = new TreeMap<Integer, Event>();
-        // No maneja eventos con el mismo tiempo de ocurrencia
-        // Soluciones:
-        // 1. Usar una lista (puede ser array simple o ArrayList) de eventos en vez de un solo evento
-        // 2. Cambiar TreeMap por una clase nueva EventList que puede manejar un ArrayList de eventos y entonces ajustamos el código para manejar esta nueva clase
+        // generador de numeros aleatorios con semilla
+        int seed = 43;
+        // TODO cambiar el lambda a uno con sentido y luego comprobar si los numeros generados son exponenciales
+        Exponential exp = new Exponential(1, seed);
 
-        // añadimos eventos
-        int initTime = 5;
-        int duration = 0;
-        int timeToHappen = initTime + duration;
-        futureEvents.put(timeToHappen, new Event(10, 4, initTime, duration));
-
-        initTime = 2;
-        duration = 5;
-        timeToHappen = initTime + duration;
-        futureEvents.put(timeToHappen, new Event(5, 3, initTime, duration));
-
-        initTime = 0;
-        duration = 2;
-        timeToHappen = initTime + duration;
-        futureEvents.put(timeToHappen, new Event(20, 2, initTime, duration));
-
-        initTime = 0;
-        duration = 2;
-        timeToHappen = initTime + duration;
-        futureEvents.put(timeToHappen, new Event(100, 1, initTime, duration));
-
-
-        // mostrar lista de eventos futuros
-        for (Event event : futureEvents.values()) {
-            System.out.println("EVENTO: type " + event.getType() + " id: " + event.getId() + " time: " + event.getTimeToHappen());
+        /* //comprobar generador de numeros aleatorios
+        double lista1[] = new double[1000];
+        for (int i = 0; i < 1000; ++i) {
+            lista1[i] = exp.getNext();
         }
 
-        // añadimos eventos
+        // Determinar si los numeros generados son exponenciales
+        for (int i = 0; i < 1000; ++i) {
+            System.out.println(lista1[i] + ", ");
+        } */
+
+        // TODO determinar si el generador de numeros aleatorios es correcto
+        
+        // cola de prioridad para eventos futuros
+        // hace las veces de lista de eventos futuros
+        PriorityQueue<Event> futureEvents = new PriorityQueue<Event>(new SortByTimeToHappen());
+
+        // TODO Insertar eventos de prueba
+        futureEvents.add(new Event(1, 1, 0, 5, "Crear tropa"));
+        futureEvents.add(new Event(2, 2, 5, 0, "Recolectar recursos"));
 
         // simulamos el tiempo
+        char response = ' ';
+
+        // scaner
+        Scanner scanner = new Scanner(System.in);
+
         while (time < TIME_LIMIT) {
-            // procesamos eventos
-            while (futureEvents.size() > 0 && futureEvents.firstKey() == time){
-                // obtenemos el primer evento
-                Event event = futureEvents.pollFirstEntry().getValue();
-                System.out.println("EVENTO: type " + event.getType() + " id: " + event.getId() + " time: " + event.getTimeToHappen());
+            // revisar si hay eventos que deben ocurrir en este instante
+            while (!futureEvents.isEmpty() && futureEvents.peek().getTimeToHappen() == time) {
+                Event event = futureEvents.poll();
+                System.out.println("Ejecutando evento: " + event.getDescription());
+            }
+
+            // Con el generador de numeros aleatorios, determinar si se generará un nuevo evento
+            
+            // leer el siguiente evento
+            Event futuro = futureEvents.peek();
+
+            // TODO esto se puede hacer más bonito, imprimiendo dos columnas
+
+            // TODO mostrar el estado del sistema
+            System.out.println("Tiempo: " + time);
+            System.out.println("Siguiente evento: " + (futuro == null ? "Ninguno" : futuro.getDescription() + " en " + (futuro.getTimeToHappen() - time) + " segundos"));
+            // TODO mostrar el estado de las aldeas, edificios, defensas y tropas
+
+            // Instrucciones para el usuario
+            if (response != 'o') {
+                System.out.println("Instrucciones:");
+                System.out.println("Presione 'o' para avance automático (se ignorarán las intrucciones siguientes)");
+                System.out.println("Presione 'n' para avanzar al siguiente evento");
+                System.out.println("Presione 'j' para avanzar un segundo");
+                System.out.println("Presione 'a' para atacar otra aldea");
+                System.out.println("Presione 'e' para mejorar un edificio");
+                System.out.println("Presione 'd' para mejorar una defensa");
+                System.out.println("Presione 'b' para entrenar un bárbaro");
+                System.out.println("Presione 'q' para salir de la simulación");
             }
            
-            // añadimos un nuevo evento con probabilidad del 10%
-            // deberia ser con el generador de numeros aleatorios
-            // que se inicializa al principio del programa
-            // y que tiene probabilidad exponencial 
-            int probabilidadEvento = (int) (Math.random() * 100);
-            if (probabilidadEvento < 10) {
-                // añadimos un nuevo evento
-                initTime = time;
-                duration = 2;
-                timeToHappen = initTime + duration;
-                futureEvents.put(timeToHappen, new Event(100, 1, initTime, duration));
+            // Tomamos input y ejecutamos la acción correspondiente
+            try {
+                if (response != 'o') {
+                    response = scanner.next().charAt(0);
+                }
+            } catch (Exception e) {
+                System.out.println("Error al leer la entrada");
+                scanner.nextLine();
+                System.out.flush();
+                response = ' ';
+            }
+            
+            switch (response) {
+                case 'n':
+                    if (futureEvents.isEmpty()) {
+                        System.out.println("No hay eventos futuros");
+                    } else {
+                        time = futureEvents.peek().getTimeToHappen();
+                    }
+                    break;
+                case 'q':
+                    time = TIME_LIMIT;
+                    break;
+                case 'j':
+                    time++;
+                    break;
+                case 'a':
+                    // TODO atacar otra aldea
+                    break;
+                case 'e':
+                    // TODO mejorar un edificio
+                    break;
+                case 'd':
+                    // TODO mejorar una defensa
+                    break;
+                case 'b':
+                    // TODO entrenar un bárbaro
+                    break;
+                case 'o':
+                    ++time;
+                    Thread.sleep(1000);
+                    break;
+                default:
+                    System.out.println("Comando no reconocido");
+                    break;
             }
 
-            System.out.println("Time: " + time);
-            ++time;
-            // añadimos sleep de 1000 ms
-            Thread.sleep(1000);
+            // limpiar pantalla
+            System.out.println("\033[H\033[2J");
         }
 
-        System.out.println("Simulation finished");
+        scanner.close();
+        System.out.println("Simulación finalizada");
     }
 }
