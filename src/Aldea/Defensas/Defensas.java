@@ -1,21 +1,23 @@
 package Aldea.Defensas;
 
-public class Defensas {
+import Aldea.Edificio;
+import Aldea.TipoEdificio;
+
+public class Defensas extends Edificio {
     
     private int cantidadDefensas;
-    private int nivelDefensa;
     private int capacidadDefensa;
 
-    public Defensas(){
+    public Defensas() {
+        super(1, 5, 2, TipoEdificio.DEFENSA, TipoEdificio.ALMACEN_ORO);
         this.cantidadDefensas=1;
-        this.nivelDefensa=1;
         this.capacidadDefensa=1;
     }
 
     public void upgrade(){
-        this.nivelDefensa+=1;
-        this.capacidadDefensa = this.nivelDefensa * 10;
-        this.cantidadDefensas = this.nivelDefensa * 10;
+        upgradeEdificio();
+        this.capacidadDefensa = this.nivel * 10;
+        this.cantidadDefensas = this.nivel * 10;
     }
 
     public void aumentar(){
@@ -26,20 +28,12 @@ public class Defensas {
         this.cantidadDefensas = cantidadDefensa;
        }
     
-    public void setNivelDefensa(int nivelDefensa){
-        this.nivelDefensa = nivelDefensa;
-    }
-
     public void setCapacidadDefensa(int capacidadDefensa){
         this.capacidadDefensa = capacidadDefensa;
     }
 
     public int getCantidadDefensas(){
         return this.cantidadDefensas;
-    }
-
-    public int getNivelDefensas(){
-        return this.nivelDefensa;
     }
 
     public int getCapacidadDefensa(){

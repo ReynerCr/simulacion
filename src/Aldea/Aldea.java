@@ -7,119 +7,105 @@ import Aldea.Tropas.*;
 import Aldea.Constructor.*;
 import Aldea.Almacen.*;
 
+import java.util.HashMap;
+
 public class Aldea {
-    private Recolector extractor;
-    private Recolector mina;
-    private Defensas defensa;
-    private Constructor constructor;
-    private Almacen almacenElixir;
-    private Almacen almacenOro;
-    private Campamento campamento;
-    private Cuartel cuartel;
-    private Laboratorio laboratorio;
+    // hashmap para almacenar los edificios
+    // como se guarda el tipo en el edificio capaz no es necesario esto
+    private HashMap<TipoEdificio, Edificio> edificios;
 
     public Aldea(){
-        this.extractor = new Recolector(1);
-        this.mina = new Recolector(1);
-        this.defensa = new Defensas();
-        this.constructor = new Constructor();
-        this.almacenElixir = new Almacen();
-        this.almacenOro = new Almacen();
-        this.campamento = new Campamento();
-        this.cuartel = new Cuartel();
-        this.laboratorio = new Laboratorio();
+        this.edificios = new HashMap<TipoEdificio, Edificio>();
+        Recolector extractor = new Recolector(1, TipoEdificio.EXTRACTOR);
+        Recolector mina = new Recolector(1, TipoEdificio.MINA);
+        Defensas defensa = new Defensas();
+        Constructor constructor = new Constructor();
+        Almacen almacenElixir = new Almacen(TipoEdificio.ALMACEN_ELIXIR);
+        Almacen almacenOro = new Almacen(TipoEdificio.ALMACEN_ORO);
+        Campamento campamento = new Campamento();
+        Cuartel cuartel = new Cuartel();
+        Laboratorio laboratorio = new Laboratorio();
+
+        this.edificios.put(TipoEdificio.EXTRACTOR, extractor);
+        this.edificios.put(TipoEdificio.MINA, mina);
+        this.edificios.put(TipoEdificio.DEFENSA, defensa);
+        this.edificios.put(TipoEdificio.CONSTRUCTOR, constructor);
+        this.edificios.put(TipoEdificio.ALMACEN_ELIXIR, almacenElixir);
+        this.edificios.put(TipoEdificio.ALMACEN_ORO, almacenOro);
+        this.edificios.put(TipoEdificio.CAMPAMENTO, campamento);
+        this.edificios.put(TipoEdificio.CUARTEL, cuartel);
+        this.edificios.put(TipoEdificio.LABORATORIO, laboratorio);
     }
 
     public void producir() {
-        mina.producir();
-        extractor.producir();
+        getMina().producir();
+        getExtractor().producir();
     }
 
-    public Recolector getMina() {
-        return mina;
-    }
-
-    public Recolector getExtractor() {
-        return extractor;
-    }
-
-    public Defensas getDefensa() {
-        return defensa;
-    }
-
-    public Constructor getConstructor() {
-        return constructor;
-    }
-
-    public Almacen getAlmacenElixir() {
-        return almacenElixir;
-    }
-
-    public Almacen getAlmacenOro() {
-        return almacenOro;
-    }
-
-    public Campamento getCampamento() {
-        return campamento;
-    }
-
-    public Cuartel getCuartel() {
-        return cuartel;
-    }
-
-    public Laboratorio getLaboratorio() {
-        return laboratorio;
+    public Edificio getEdificio(TipoEdificio tipoEdificio) {
+        return edificios.get(tipoEdificio);
     }
 
     public void recolectar(){
-        almacenElixir.almacenar(extractor.getAcumulado());
-        almacenOro.almacenar(mina.getAcumulado());
+        Recolector extractor = getExtractor();
+        Recolector mina = getMina();
+        
+        getAlmacenElixir().almacenar(extractor.getAcumulado());
+        getAlmacenOro().almacenar(mina.getAcumulado());
         extractor.vaciar();
         mina.vaciar();
     }
 
-    public void upgradeExtractor(){
-        this.extractor.upgrade();
-    } 
+    public Edificio upgradeEdificio(TipoEdificio tipoEdificio){
+        Edificio edificio = getEdificio(tipoEdificio);
+        Almacen almacen = null;
 
-    public void upgradeMina(){
-        this.mina.upgrade();
-    }
-
-    public void upgradeDefensa(){
-        this.defensa.upgrade();
-    }
-
-    public void upgradeConstructor(){
-        this.constructor.upgrade();
-    }
-
-    public void upgradeAlmacenElixir(){
-        this.almacenElixir.upgrade();
-    }
-
-    public void upgradeAlmacenOro(){
-        this.almacenOro.upgrade();
-    }
-
-    public void upgradeCuartel(){
-        this.cuartel.upgrade();
-    }
-
-    public void aumentarDefensa(){
-        this.defensa.aumentar();
-    }
-
-    public void getNumTropas() {
-        this.cuartel.getColaEntrenamiento();
-    }
-
-    public boolean encolarConstruccion(int nEdificios){
-        boolean encolado = constructor.aumentarCola(nEdificios);
-        if (!encolado) {
-            System.out.println("Error: la cola de constructores está llena");
-            return true;
+        if (edificio == null) {
+            System.out.println("Error: el edificio no existe");
+            return null;
         }
-        return false;
+
+        if (edificio.getTipoAlmacenConsumo() == TipoEdificio.ALMACEN_ORO) {
+            almacen = getAlmacenOro();
+        } else if (edificio.getTipoAlmacenConsumo() == TipoEdificio.ALMACEN_ELIXIR) {
+            almacen = getAlmacenElixir();
+        } else {
+            almacen = getAlmacenOro();
+        }
+
+        Constructor constructor = getConstructor();
+        int dispConstructor = constructor.getDisponibilidad();
+        if (dispConstructor == 0) {
+            System.out.println("Error: la cola de constructores está llena");
+            return null;
+        }
+
+        int precio = edificio.getPrecioMejora();
+        boolean mejora = almacen.consumir(precio);
+        if (!mejora) {
+            System.out.println("No hay suficiente oro para mejorar el extractor");
+            return null;
+        }
+
+        constructor.aumentarCola(1);
+        return edificio;
     }
+
+    public Almacen getAlmacenElixir() { return (Almacen) edificios.get(TipoEdificio.ALMACEN_ELIXIR); }
+
+    public Almacen getAlmacenOro() { return (Almacen) edificios.get(TipoEdificio.ALMACEN_ORO); }
+
+    public Recolector getMina() { return (Recolector) edificios.get(TipoEdificio.MINA); }
+
+    public Recolector getExtractor() { return (Recolector) edificios.get(TipoEdificio.EXTRACTOR); }
+
+    public Defensas getDefensa() { return (Defensas) edificios.get(TipoEdificio.DEFENSA); }
+
+    public Cuartel getCuartel() { return (Cuartel) edificios.get(TipoEdificio.CUARTEL); }
+
+    public Campamento getCampamento() { return (Campamento) edificios.get(TipoEdificio.CAMPAMENTO); }
+
+    public Laboratorio getLaboratorio() { return (Laboratorio) edificios.get(TipoEdificio.LABORATORIO); }
+
+    public Constructor getConstructor() { return (Constructor) edificios.get(TipoEdificio.CONSTRUCTOR); }
 }

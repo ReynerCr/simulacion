@@ -1,22 +1,30 @@
 package Aldea.Constructor;
 
-public class Constructor {
+import Aldea.Edificio;
+import Aldea.TipoEdificio;
+
+public class Constructor extends Edificio {
     
     private int capacidadMaxima;
-    private int nivelConstructor;
     private int colaConstruccion;
 
     public Constructor(){
+        super(1, 5, 2, TipoEdificio.CONSTRUCTOR, TipoEdificio.ALMACEN_ORO);
         this.capacidadMaxima=3;
-        this.nivelConstructor=1;
         this.colaConstruccion = 0;
     }
 
-    public void aumentarCola(int edificio){
+    public boolean aumentarCola(int edificio){
         int entrada = this.colaConstruccion + 1;
-        if(capacidadMaxima < entrada){
+        if(capacidadMaxima >= entrada){
             this.colaConstruccion=entrada;
+            return true;
         }
+        return false;
+    }
+
+    public int getDisponibilidad(){
+        return this.capacidadMaxima - this.colaConstruccion;
     }
 
     public void disminuirCola(){
@@ -24,20 +32,15 @@ public class Constructor {
     }
 
     public void upgrade(){
-        this.nivelConstructor+=1;
+        upgradeEdificio();
         this.capacidadMaxima+=1;
-
     }
 
     public void setCapacidad(int capacidadMaxima){ this.capacidadMaxima = capacidadMaxima; }
     
-    public void setNivel(int nivelConstructor){ this.nivelConstructor = nivelConstructor;}
-    
     public void setCola(int colaConstruccion){ this.colaConstruccion = colaConstruccion;}
 
     public int getCapacidad(){ return this.capacidadMaxima; }
-
-    public int getNivel(){ return this.nivelConstructor; }
 
     public int getCola(){ return this.colaConstruccion; }
 }

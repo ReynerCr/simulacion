@@ -1,23 +1,31 @@
 package Aldea.Tropas;
 
-public class Laboratorio {
-    
-        private int capacidadMaxima;
-        private int cantidadTropas;
+import Aldea.Edificio;
+import Aldea.TipoEdificio;
 
-        public Laboratorio(){
-            this.capacidadMaxima=1;
-            this.cantidadTropas=0;
-        }
+public class Laboratorio extends Edificio {
 
-        public void ingresar(){
-            int entrada = this.cantidadTropas + 1;
-            if(this.capacidadMaxima<entrada){
-                this.cantidadTropas= entrada;
-            }
-        }
+    private int capacidadMaxima;
+    private int cantidadTropas;
 
-        public void eliminar(){
-            this.cantidadTropas-=1;
+    public Laboratorio() {
+        super(1, 5, 2, TipoEdificio.LABORATORIO, TipoEdificio.ALMACEN_ELIXIR);
+        this.capacidadMaxima = 1;
+        this.cantidadTropas = 0;
+    }
+
+    public void ingresar() {
+        int entrada = this.cantidadTropas + 1;
+        if (this.capacidadMaxima < entrada) {
+            this.cantidadTropas = entrada;
         }
+    }
+
+    public void upgrade() {
+        upgradeEdificio();
+    }
+
+    public void eliminar() {
+        this.cantidadTropas -= 1;
+    }
 }

@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+import Aldea.TipoEdificio;
+
 public class App {
     private static Scanner scanner = new Scanner(System.in);
 
@@ -46,19 +48,19 @@ public class App {
                     break;
                 case 'e':
                     System.out.println("Mejorando extractor...");
-                    sim.aldeaUpgradeExtractor();
+                    sim.aldeaUpgradeEdificio(TipoEdificio.EXTRACTOR);
                     break;
                 case 'm':
                     System.out.println("Mejorando mina...");
-                    sim.aldeaUpgradeMina();
+                    sim.aldeaUpgradeEdificio(TipoEdificio.MINA);
                     break;
                 case 'x':
                     System.out.println("Mejorando almacen de oro...");
-                    sim.aldeaUpgradeAlmacenOro();
+                    sim.aldeaUpgradeEdificio(TipoEdificio.ALMACEN_ORO);
                     break;
                 case 'z':
                     System.out.println("Mejorando almacen de elixir...");
-                    sim.aldeaUpgradeAlmacenElixir();
+                    sim.aldeaUpgradeEdificio(TipoEdificio.ALMACEN_ELIXIR);
                     break;
                 case 't':
                     System.out.println("Entrenando tropas...");

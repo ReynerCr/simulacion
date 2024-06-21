@@ -1,21 +1,23 @@
 package Aldea.Tropas;
 
-public class Cuartel {
-    
+import Aldea.Edificio;
+import Aldea.TipoEdificio;
+
+public class Cuartel extends Edificio {
+
     private int capacidadMaxima;
-    private int nivelCuartel;
     private int colaEntrenamiento;
 
-    public Cuartel(){
-        this.capacidadMaxima=3;
-        this.nivelCuartel = 1;
+    public Cuartel() {
+        super(1, 5, 2, TipoEdificio.CUARTEL, TipoEdificio.ALMACEN_ELIXIR);
+        this.capacidadMaxima = 3;
         this.colaEntrenamiento = 0;
     }
 
-    public void aumentarCola(int tropa){
+    public void aumentarCola(int tropa) {
         int entrada = this.colaEntrenamiento + tropa;
 
-        if(capacidadMaxima > entrada){
+        if (capacidadMaxima > entrada) {
             this.colaEntrenamiento = entrada;
         } else {
             this.colaEntrenamiento = capacidadMaxima;
@@ -24,20 +26,20 @@ public class Cuartel {
     }
 
     // TODO cuidado con la cantidad de tropas
-    public void disminuirCola(int cantidad){
-        if (cantidad < this.colaEntrenamiento){
+    public void disminuirCola(int cantidad) {
+        if (cantidad < this.colaEntrenamiento) {
             this.colaEntrenamiento = this.colaEntrenamiento - cantidad;
         } else {
             this.colaEntrenamiento = 0;
         }
     }
 
-    public void upgrade(){
-        this.nivelCuartel += 1;
-        this.capacidadMaxima +=1;
+    public void upgrade() {
+        upgradeEdificio();
+        this.capacidadMaxima += 1;
     }
 
-    public int getColaEntrenamiento(){
+    public int getColaEntrenamiento() {
         return this.colaEntrenamiento;
     }
 }

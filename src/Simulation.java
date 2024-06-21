@@ -2,8 +2,9 @@ import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.Comparator;
 
-
 import Aldea.Aldea;
+import Aldea.Edificio;
+import Aldea.TipoEdificio;
 import Aldea.Almacen.*;
 import Aldea.Recolectores.*;
 
@@ -66,58 +67,15 @@ public class Simulation {
         addEvent(e);
     }
 
-    public void aldeaUpgradeExtractor() {
-        Recolector extractor = aldea.getExtractor();
-        int precio = extractor.getPrecioMejora();
-        boolean mejora = aldea.getAlmacenOro().consumir(precio);
-        if (!mejora) {
-            System.out.println("No hay suficiente oro para mejorar el extractor");
+    public void aldeaUpgradeEdificio(TipoEdificio tipo) {
+        Edificio edificio = aldea.upgradeEdificio(tipo);
+        if (edificio == null) {
             return;
         }
+        
         Event e = new Event(time, 5, "Mejora del extractor", (event) -> {
-           extractor.upgrade();
-        });
-        addEvent(e);
-    }
-
-    public void aldeaUpgradeMina() {
-        Recolector mina = aldea.getMina();
-        int precio = mina.getPrecioMejora();
-        boolean mejora = aldea.getAlmacenElixir().consumir(precio);
-        if (!mejora) {
-            System.out.println("No hay suficiente elixir para mejorar la mina");
-            return;
-        }
-        Event e = new Event(time, 5, "Mejora de la mina", (event) -> {
-            mina.upgrade();
-        });
-        addEvent(e);
-    }
-
-    public void aldeaUpgradeAlmacenOro() {
-        Almacen almacen = aldea.getAlmacenOro();
-        int precio = almacen.getPrecioMejora();
-        boolean mejora = aldea.getAlmacenElixir().consumir(precio);
-        if (!mejora) {
-            System.out.println("No hay suficiente elixir para mejorar el almacen de oro");
-            return;
-        }
-        Event e = new Event(time, 5, "Mejora de almacen de oro", (event) -> {
-            almacen.upgrade();
-        });
-        addEvent(e);
-    }
-
-    public void aldeaUpgradeAlmacenElixir() {
-        Almacen almacen = aldea.getAlmacenElixir();
-        int precio = almacen.getPrecioMejora();
-        boolean mejora = aldea.getAlmacenOro().consumir(precio);
-        if (!mejora) {
-            System.out.println("No hay suficiente oro para mejorar el almacen de elixir");
-            return;
-        }
-        Event e = new Event(time, 5, "Mejora de almacen de elixir", (event) -> {
-            almacen.upgrade();
+           edificio.upgrade();
+           aldea.getConstructor().disminuirCola();
         });
         addEvent(e);
     }
@@ -150,6 +108,9 @@ public class Simulation {
         // tropas
         System.out.println("Cantidad de tropas en entrenamiento: " + aldea.getCuartel().getColaEntrenamiento());
         System.out.println("Cantidad de tropas en campamento: " + aldea.getCampamento().getCantidadActualCampamento());
+
+        // numero de constructores disponibles
+        System.out.println("Constructores --- disponibles: " + aldea.getConstructor().getDisponibilidad() + "   /   total: " + aldea.getConstructor().getCapacidad());
 
         Event futuro = this.peekEvent();
         if (futuro != null) {
