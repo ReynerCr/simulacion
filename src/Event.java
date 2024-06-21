@@ -4,12 +4,7 @@ public class Event {
     int timeToHappen; // time when the event will happen (initTime + duration)
     String description; // description of the event
 
-    int type;
-    int id;
-
-    public Event(int type, int id, int initTime, int duration, String description) {
-        this.type = type;
-        this.id = id;
+    public Event(int initTime, int duration, String description) {
         this.initTime = initTime;
         this.duration = duration;
         this.timeToHappen = initTime + duration;
@@ -18,22 +13,6 @@ public class Event {
 
     public int getTimeToHappen() {
         return timeToHappen;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void getInitTime(int initTime) {

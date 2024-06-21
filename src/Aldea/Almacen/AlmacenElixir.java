@@ -1,10 +1,10 @@
 package Aldea.Almacen;
 
 public class AlmacenElixir {
-    int max;
-    int nivel;
-    int acum;
-    int tasaPerdida;
+    private int max;
+    private int nivel;
+    private int acum;
+    private int tasaPerdida;
 
     public AlmacenElixir(){
         this.max=10;

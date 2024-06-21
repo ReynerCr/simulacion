@@ -2,9 +2,9 @@ package Aldea.Tropas;
 
 public class Cuartel {
     
-    int capacidadMaxima;
-    int nivelCuartel;
-    int colaEntrenamiento;
+    private int capacidadMaxima;
+    private int nivelCuartel;
+    private int colaEntrenamiento;
 
     public Cuartel(){
         this.capacidadMaxima=3;
@@ -15,8 +15,11 @@ public class Cuartel {
     public void aumentarCola(int tropa){
         int entrada = this.colaEntrenamiento + tropa;
 
-        if(capacidadMaxima < entrada){
-            this.colaEntrenamiento = this.capacidadMaxima;
+        if(capacidadMaxima > entrada){
+            this.colaEntrenamiento = entrada;
+        } else {
+            this.colaEntrenamiento = capacidadMaxima;
+            System.out.println("No se pudieron entrenar " + (entrada - capacidadMaxima) + " tropas.");
         }
     }
 
@@ -28,5 +31,8 @@ public class Cuartel {
         this.nivelCuartel += 1;
         this.capacidadMaxima +=1;
     }
-    
+
+    public int getColaEntrenamiento(){
+        return this.colaEntrenamiento;
+    }
 }

@@ -1,9 +1,9 @@
 package Aldea.Almacen;
 
 public class AlmacenOro {
-    int max;
-    int nivel;
-    int acum;
+    private int max;
+    private int nivel;
+    private int acum;
 
     public AlmacenOro(){
         this.max=10;

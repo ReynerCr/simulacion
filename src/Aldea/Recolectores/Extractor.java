@@ -2,11 +2,11 @@ package Aldea.Recolectores;
 
 public class Extractor {
     
-    int nivel;
-    int tasaProduccionElixir;
-    int capacidadMaxima;
-    int elixirRecolectado;
-    int tasaPerdida;
+    private int nivel;
+    private int tasaProduccionElixir;
+    private int capacidadMaxima;
+    private int elixirRecolectado;
+    private int tasaPerdida;
 
     public Extractor(int tasaProduccionElixir){
         this.tasaProduccionElixir = tasaProduccionElixir;

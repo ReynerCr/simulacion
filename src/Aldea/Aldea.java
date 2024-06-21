@@ -35,27 +35,47 @@ public class Aldea {
         extractor.producir();
     }
 
-    public int getOroRecolectado() {
-        return mina.getOroRecolectado();
+    public Mina getMina() {
+        return mina;
     }
 
-    public int getElixirRecolectado() {
-        return extractor.getElixirRecolectado();
+    public Extractor getExtractor() {
+        return extractor;
     }
 
-    public int getOroAlmacenado() {
-        return almacenOro.getAcum();
+    public Defensas getDefensa() {
+        return defensa;
     }
 
-    public int getElixirAlmacenado() {
-        return almacenElixir.getAcum();
+    public Constructor getConstructor() {
+        return constructor;
+    }
+
+    public AlmacenElixir getAlmacenElixir() {
+        return almacenElixir;
+    }
+
+    public AlmacenOro getAlmacenOro() {
+        return almacenOro;
+    }
+
+    public Campamento getCampamento() {
+        return campamento;
+    }
+
+    public Cuartel getCuartel() {
+        return cuartel;
+    }
+
+    public Laboratorio getLaboratorio() {
+        return laboratorio;
     }
 
     public void recolectar(){
-        almacenElixir.almacenar(getElixirRecolectado());
-        almacenOro.almacenar(getElixirRecolectado());
-        this.extractor.vaciar();
-        this.mina.vaciar();
+        almacenElixir.almacenar(extractor.getElixirRecolectado());
+        almacenOro.almacenar(mina.getOroRecolectado());
+        extractor.vaciar();
+        mina.vaciar();
     }
 
     public void upgradeExtractor(){
@@ -88,5 +108,13 @@ public class Aldea {
 
     public void aumentarDefensa(){
         this.defensa.aumentar();
+    }
+
+    public void entrenarTropa(){
+        this.cuartel.aumentarCola(1);
+    }
+
+    public void getNumTropas() {
+        this.cuartel.getColaEntrenamiento();
     }
 }

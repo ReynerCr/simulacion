@@ -1,21 +1,69 @@
-import java.util.Comparator;
-import java.util.PriorityQueue;
 import java.util.Scanner;
 
-// Clase comparadora para ordenar eventos por tiempo de ocurrencia
-class SortByTimeToHappen implements Comparator<Event> {
-    public int compare(Event a, Event b)
-    {
-        return a.timeToHappen - b.timeToHappen;
-    }
-}
-
-// main
 public class App {
+    private static Scanner scanner = new Scanner(System.in);
+
+    public static void clearConsole() {
+        System.out.println("\033[H\033[2J");
+    }
+
+    public static void menuAldea(Simulation sim) {
+        clearConsole();
+
+        char resp = ' ';
+        
+        while (resp != 'p') { // previous
+            sim.printStatus();
+            System.out.println("Presione 'r' para recolectar recursos");
+            System.out.println("Presione 'c' para edificaciones");
+            System.out.println("Presione 'c' para defensas");
+            System.out.println("Presione 't' para tropas");
+            System.out.println("Presione 'a' para atacar a otra aldea");
+            System.out.println("Presione 'p' para volver al menú principal");
+
+            try {
+                resp = scanner.next().charAt(0);
+            } catch (Exception e) {
+                System.out.println("Error al leer la entrada");
+                scanner.nextLine();
+                System.out.flush();
+                resp = ' ';
+            }
+
+            switch (resp) {
+                case 'r':
+                    System.out.println("Recolectando recursos...");
+                    sim.aldeaRecolectar();
+                    break;
+                case 'c':
+                    System.out.println("Construyendo edificaciones...");
+                    break;
+                case 't':
+                    System.out.println("Entrenando tropas...");
+                    sim.aldeaEntrenarTropa();
+                    break;
+                case 'a':
+                    System.out.println("Atacando a otra aldea...");
+                    sim.aldeaAtacar();
+                    break;
+                case 'p':
+                    System.out.println("Volviendo al menú principal...");
+                    break;
+                default:
+                    System.out.println("Comando no reconocido");
+                    break;
+            }
+            clearConsole();
+        }
+
+        return;
+    }
+
     public static void main(String[] args) throws Exception {
         int seed = 43;
         int lambda = 1;
-        int TIME_LIMIT = 100; // tiempo limite de simulación // TODO puede ser por args o del archivo de configuración
+        int initTime = 0;
+        int TIME_LIMIT = 100; // tiempo limite de simulación
          // tiempo actual
 
         /* //comprobar generador de numeros aleatorios
@@ -29,51 +77,33 @@ public class App {
             System.out.println(lista1[i] + ", ");
         } */
 
-        int initTime = 0;
-
         Simulation sim = new Simulation(initTime, TIME_LIMIT, seed, lambda);
-        sim.addEvent(new Event(0, 0, 0, 5, "Entrenar tropas"));
-
-        // simulamos el tiempo
+        
         char response = ' ';
-
-        // scaner
-        Scanner scanner = new Scanner(System.in);
-
+        
         while (sim.getTime() < TIME_LIMIT) {
             // ejecutar eventos que deben ocurrir en este instante
             sim.runEvents();
 
             // Con el generador de numeros aleatorios, determinar si se generará un nuevo evento
             
-            // leer el siguiente evento
-            // TODO esto se puede hacer más bonito, imprimiendo dos columnas
-
-            // TODO mostrar el estado del sistema
-            // mostrar el estado de las aldeas, edificios, defensas y tropas
+            // mostrar el estado de la simulación
             sim.printStatus();
 
             // Instrucciones para el usuario
             if (response != 'o') {
-                System.out.println("Instrucciones:");
-                System.out.println("Presione 'o' para avance automático (se ignorarán las intrucciones siguientes)");
+                System.out.println("Presione 'x' para avance automático");
                 System.out.println("Presione 'n' para avanzar al siguiente evento");
                 System.out.println("Presione 'j' para avanzar un segundo");
-                System.out.println("Presione 'a' para atacar otra aldea");
-                System.out.println("Presione 'e' para mejorar un edificio");
-                System.out.println("Presione 'd' para mejorar una defensa");
-                System.out.println("Presione 'b' para entrenar un bárbaro");
-                System.out.println("Presione 'r' para recolectar recursos");
+                System.out.println("Presione 'a' para eventos de aldea");
                 System.out.println("Presione 'q' para salir de la simulación");
-            }
-           
-            // Tomamos input y ejecutamos la acción correspondiente
+            }   
             try {
                 if (response != 'o') {
                     response = scanner.next().charAt(0);
                 }
             } catch (Exception e) {
-                System.out.println("Error al leer la entrada");
+                System.out.println("Error al leer la entrada " + e);
                 scanner.nextLine();
                 System.out.flush();
                 response = ' ';
@@ -93,20 +123,8 @@ public class App {
                 case 'j':
                     sim.advanceOneStep();
                     break;
-                case 'r':
-                    sim.aldeaRecolectar();
-                    break;
                 case 'a':
-                    // TODO atacar otra aldea
-                    break;
-                case 'e':
-                    // TODO mejorar un edificio
-                    break;
-                case 'd':
-                    // TODO mejorar una defensa
-                    break;
-                case 'b':
-                    // TODO entrenar un bárbaro
+                    menuAldea(sim);
                     break;
                 case 'o':
                     sim.advanceOneStep();

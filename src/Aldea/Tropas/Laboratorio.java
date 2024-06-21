@@ -2,8 +2,8 @@ package Aldea.Tropas;
 
 public class Laboratorio {
     
-        int capacidadMaxima;
-        int cantidadTropas;
+        private int capacidadMaxima;
+        private int cantidadTropas;
 
         public Laboratorio(){
             this.capacidadMaxima=1;

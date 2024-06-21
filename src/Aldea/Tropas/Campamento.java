@@ -2,10 +2,10 @@ package Aldea.Tropas;
 
 public class Campamento {
 
-        int capacidadMaxima;
-        int cantidadActualCampamento;
-        int nivelCampamento;
-        int nivelAtaque;
+        private int capacidadMaxima;
+        private int cantidadActualCampamento;
+        private int nivelCampamento;
+        private int nivelAtaque;
 
         public Campamento(){
             this.capacidadMaxima=10;
@@ -27,13 +27,13 @@ public class Campamento {
             this.cantidadActualCampamento = 0;
         }
 
-        public void getCapacidadMaxima(int capacidadMaxima){ this.capacidadMaxima = capacidadMaxima;}
+        public int getCapacidadMaxima(){ return capacidadMaxima;}
 
-        public void getCantidadActualCampamento(int cantidadActualCampamento){ this.cantidadActualCampamento = cantidadActualCampamento;}
+        public int getCantidadActualCampamento(){ return cantidadActualCampamento; }
 
-        public void getNivelCampamento(int nivelCampamento){this.nivelCampamento = nivelCampamento;}
+        public int getNivelCampamento(){ return nivelCampamento; }
 
-        public void getNivelAtaque(int nivelAtaque){ this.nivelAtaque = nivelAtaque;}
+        public int getNivelAtaque(){ return nivelAtaque;}
 
         public int setCapacidadMaxima(){ return this.capacidadMaxima;}
 

@@ -1,8 +1,8 @@
 import java.util.Random;
 
 public class Exponential extends Rng {
-    double lambda;
-    Random uniform;
+    private double lambda;
+    private Random uniform;
     
     public Exponential(double _lambda, int seed) {
         lambda = _lambda;

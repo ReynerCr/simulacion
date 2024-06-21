@@ -1,11 +1,11 @@
 package Aldea.Recolectores;
 
 public class Mina {
-    int nivel;
-    int tasaProduccionOro;
-    int capacidadMaxima;
-    int oroRecolectado;
-    int tasaPerdida;
+    private int nivel;
+    private int tasaProduccionOro;
+    private int capacidadMaxima;
+    private int oroRecolectado;
+    private int tasaPerdida;
 
     public Mina(int tasaProduccionOro){
         this.tasaProduccionOro = tasaProduccionOro;

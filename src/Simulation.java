@@ -1,7 +1,17 @@
 import java.util.ArrayList;
 import java.util.PriorityQueue;
+import java.util.Comparator;
+
 
 import Aldea.Aldea;
+
+// Clase comparadora para ordenar eventos por tiempo de ocurrencia
+class SortByTimeToHappen implements Comparator<Event> {
+    public int compare(Event a, Event b)
+    {
+        return a.timeToHappen - b.timeToHappen;
+    }
+}
 
 public class Simulation {
     // cola de prioridad para eventos futuros
@@ -30,14 +40,48 @@ public class Simulation {
         }
     }
 
+    public void aldeaEntrenarTropa() {
+        aldea.entrenarTropa();
+        Event e = new Event(time, 5, "Entrenar tropa");
+        addEvent(e);
+    }
+
+    public void aldeaAtacar() {
+        // TODO falta atacar
+        Event e = new Event(time, 5, "Atacar");
+        addEvent(e);
+    }
+
+    public void aldeaConstruir() {
+        // TODO falta construir
+        Event e = new Event(time, 5, "Construir");
+        addEvent(e);
+    }
+
+    public void aldeaUpgrade() {
+        // TODO falta upgrade
+        Event e = new Event(time, 5, "Upgrade");
+        addEvent(e);
+    }
+
+    public void aldeaRecolectar() {
+        Event e = new Event(time, 0, "Recolectar recursos");
+        addEvent(e);
+        aldea.recolectar();
+    }
+
     public void printStatus() {
         System.out.println("Tiempo: " + time);
         System.out.println("Cantidad de recurso recolectado: ");
-        System.out.println("    - Oro: " + aldea.getOroRecolectado());
-        System.out.println("    - Elixir: " + aldea.getElixirRecolectado());
+        System.out.println("    - Oro: " + aldea.getExtractor().getElixirRecolectado());
+        System.out.println("    - Elixir: " + aldea.getMina().getOroRecolectado());
         System.out.println("Cantidad de recurso Almacenado: ");
-        System.out.println("    - Oro: " + aldea.getOroAlmacenado());
-        System.out.println("    - Elixir: " + aldea.getElixirAlmacenado());
+        System.out.println("    - Oro: " + aldea.getAlmacenOro().getAcum());
+        System.out.println("    - Elixir: " + aldea.getAlmacenElixir().getAcum());
+
+        System.out.println("Cantidad de tropas entrenamiento: " + aldea.getCuartel().getColaEntrenamiento());
+        System.out.println("Cantidad de tropas listas: " + aldea.getCampamento().getCantidadActualCampamento());
+
 
         Event futuro = this.peekEvent();
         System.out.println("Siguiente evento: " + (futuro == null ? "Ninguno" : futuro.getDescription() + " en " + (futuro.getTimeToHappen() - time) + " segundos"));
@@ -46,10 +90,6 @@ public class Simulation {
     public void skipToNextEvent() {
         calcDiffResources();
         time = this.getTimeToNextEvent();
-    }
-
-    public void aldeaRecolectar() {
-        aldea.recolectar();
     }
 
     public void endSimulation() {
