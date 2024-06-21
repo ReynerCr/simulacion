@@ -42,4 +42,8 @@ public class Cuartel extends Edificio {
     public int getColaEntrenamiento() {
         return this.colaEntrenamiento;
     }
+
+    public int getCapacidadMaxima() {
+        return this.capacidadMaxima;
+    }
 }
