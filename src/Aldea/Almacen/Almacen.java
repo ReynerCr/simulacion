@@ -5,14 +5,14 @@ public class Almacen {
     private int nivel;
     private int acumulado;
     private int tasaPerdida;
-    private int precio;
+    private int precioMejora;
 
     public Almacen(){
         this.max=10;
         this.nivel=1;
         this.acumulado=0;
         this.tasaPerdida=1;
-        this.precio = nivel * 5;
+        this.precioMejora = nivel * 5;
     }
 
     public void perder(){
@@ -33,7 +33,7 @@ public class Almacen {
         this.nivel = this.nivel + 1;
         this.max = this.max + (this.nivel * 5);
         this.tasaPerdida = tasaPerdida + 1;
-        this.precio = this.nivel * 5;
+        this.precioMejora = this.nivel * 5;
     }
 
     public boolean consumir(int cantidad){
@@ -52,5 +52,5 @@ public class Almacen {
     public void setMax(int max){ this.max=max;}
     public void setNivel(int nivel){ this.nivel=nivel;}
     public void setAcumulado(int acumulado){ this.acumulado=acumulado;}
-    public int getPrecioMejora(){ return this.precio; }
+    public int getPrecioMejora(){ return this.precioMejora; }
 }
