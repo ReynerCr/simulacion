@@ -6,6 +6,7 @@ public abstract class Edificio {
     protected int tiempoMejora;
     protected TipoEdificio tipoEdificio;
     protected TipoEdificio almacenConsumo;
+    protected boolean ocupado; // puede ser construido o mejora
 
     protected Edificio(int nivel, int precioMejora, int tiempoMejora, TipoEdificio tipoEdificio, TipoEdificio almacenConsumo) {
         this.nivel = nivel;
@@ -21,6 +22,14 @@ public abstract class Edificio {
         this.nivel++;
         this.precioMejora = this.nivel * precioMejora;
         this.tiempoMejora = this.nivel * tiempoMejora;
+    }
+
+    public void setOcupado(boolean ocupado) {
+        this.ocupado = ocupado;
+    }
+
+    public boolean getOcupado() {
+        return this.ocupado;
     }
 
     public void setNivel(int nivel){ this.nivel=nivel;}

@@ -60,11 +60,22 @@ public class Aldea {
         Edificio edificio = getEdificio(tipoEdificio);
         Almacen almacen = null;
 
+        // chequear si el edificio se puede mejorar
         if (edificio == null) {
             System.out.println("Error: el edificio no existe");
             return null;
+        } else if (edificio.getNivel() == 10) {
+            System.out.println("Error: el edificio ya está en nivel máximo");
+            return null;
+        } else if (edificio.getNivel() == 0) {
+            System.out.println("Error: el edificio no ha sido construido");
+            return null;
+        } else if (edificio.getOcupado()) {
+            System.out.println("Error: el edificio está en construcción o mejora");
+            return null;
         }
 
+        // chequear si hay suficiente recurso de consumo para mejorar el edificio
         if (edificio.getTipoAlmacenConsumo() == TipoEdificio.ALMACEN_ORO) {
             almacen = getAlmacenOro();
         } else if (edificio.getTipoAlmacenConsumo() == TipoEdificio.ALMACEN_ELIXIR) {
@@ -73,6 +84,7 @@ public class Aldea {
             almacen = getAlmacenOro();
         }
 
+        // chequear la disponibilidad de constructores
         Constructor constructor = getConstructor();
         int dispConstructor = constructor.getDisponibilidad();
         if (dispConstructor == 0) {
@@ -83,12 +95,25 @@ public class Aldea {
         int precio = edificio.getPrecioMejora();
         boolean mejora = almacen.consumir(precio);
         if (!mejora) {
-            System.out.println("No hay suficiente oro para mejorar el extractor");
+            System.out.println(
+                "No hay suficiente " + (almacen.getTipoEdificio() == TipoEdificio.ALMACEN_ORO ? "oro" : "elixir")
+                    + " para mejorar el edificio");
             return null;
         }
 
         constructor.aumentarCola(1);
+        edificio.setOcupado(true);
         return edificio;
+    }
+
+    public void terminarConstruccion(Edificio edificio){
+        if (edificio == null || !edificio.getOcupado()) {
+            return;
+        }
+        
+        edificio.upgrade();
+        getConstructor().disminuirCola();
+        edificio.setOcupado(false);
     }
 
     public Almacen getAlmacenElixir() { return (Almacen) edificios.get(TipoEdificio.ALMACEN_ELIXIR); }

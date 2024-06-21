@@ -72,10 +72,9 @@ public class Simulation {
         if (edificio == null) {
             return;
         }
-        
-        Event e = new Event(time, 5, "Mejora del extractor", (event) -> {
-           edificio.upgrade();
-           aldea.getConstructor().disminuirCola();
+
+        Event e = new Event(time, 5, "Finalización de mejora de edificio", (event) -> {
+            aldea.terminarConstruccion(edificio);
         });
         addEvent(e);
     }
