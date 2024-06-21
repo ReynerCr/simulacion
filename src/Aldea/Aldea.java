@@ -65,13 +65,13 @@ public class Aldea {
             System.out.println("Error: el edificio no existe");
             return null;
         } else if (edificio.getNivel() == 10) {
-            System.out.println("Error: el edificio ya está en nivel máximo");
+            System.out.println("Error: el edificio ya está en el nivel máximo");
             return null;
         } else if (edificio.getNivel() == 0) {
             System.out.println("Error: el edificio no ha sido construido");
             return null;
         } else if (edificio.getOcupado()) {
-            System.out.println("Error: el edificio está en construcción o mejora");
+            System.out.println("Error: el edificio está en proceso de construcción o mejora");
             return null;
         }
 

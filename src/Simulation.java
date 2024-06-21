@@ -5,8 +5,13 @@ import java.util.Comparator;
 import Aldea.Aldea;
 import Aldea.Edificio;
 import Aldea.TipoEdificio;
-import Aldea.Almacen.*;
-import Aldea.Recolectores.*;
+import Aldea.Almacen.Almacen;
+import Aldea.Recolectores.Recolector;
+import Aldea.Tropas.Campamento;
+import Aldea.Tropas.Cuartel;
+import Aldea.Tropas.Laboratorio;
+import Aldea.Constructor.Constructor;
+import Aldea.Defensas.Defensas;
 
 // Clase comparadora para ordenar eventos por tiempo de ocurrencia
 class SortByTimeToHappen implements Comparator<Event> {
@@ -29,11 +34,33 @@ public class Simulation {
     private Exponential exp;
     private Aldea aldea;
 
+    // punteros a los edificios de la aldea para facilitar el acceso
+    private Recolector mina;
+    private Recolector extractor;
+    private Almacen almacenOro;
+    private Almacen almacenElixir;
+    private Cuartel cuartel;
+    private Campamento campamento;
+    private Constructor constructor;
+    private Laboratorio laboratorio;
+    private Defensas defensa;
+
     public Simulation(int time, int TIME_LIMIT, int seed, int lambda) {
         this.time = time;
         this.TIME_LIMIT = TIME_LIMIT;
         this.exp = new Exponential(seed, lambda);
         this.aldea = new Aldea();
+
+        // punteros a los edificios de la aldea
+        this.mina = aldea.getMina();
+        this.extractor = aldea.getExtractor();
+        this.almacenOro = aldea.getAlmacenOro();
+        this.almacenElixir = aldea.getAlmacenElixir();
+        this.cuartel = aldea.getCuartel();
+        this.campamento = aldea.getCampamento();
+        this.constructor = aldea.getConstructor();
+        this.laboratorio = aldea.getLaboratorio();
+        this.defensa = aldea.getDefensa();
     }
 
     private void calcDiffResources() {
@@ -44,9 +71,9 @@ public class Simulation {
     }
 
     public void aldeaEntrenarTropa() {
-        aldea.getCuartel().aumentarCola(1);
+        cuartel.aumentarCola(1);
         Event e = new Event(time, 2, "Entrenar tropa", (event) -> {
-            aldea.getCampamento().agregar(aldea.getCuartel());
+            campamento.agregar(cuartel);
         });
         addEvent(e);
     }
@@ -89,34 +116,29 @@ public class Simulation {
     public void printStatus() {
         System.out.println("Tiempo: " + time);
         
-        // recolectores
-        System.out.println("Recolectores de recursos: ");
-        Recolector mina = aldea.getMina();
-        Recolector extractor = aldea.getExtractor();
-
-        System.out.println("    - Oro: " + mina.getAcumulado() + " / Tasa de produccion: " + mina.getTasa() + "    nivel: " + mina.getNivel());
-        System.out.println("    - Elixir: " + extractor.getAcumulado() + "  /  Tasa de produccion: " + extractor.getTasa() + "    nivel: " + extractor.getNivel());
-        
-        // almacenes
-        Almacen almacenOro = aldea.getAlmacenOro();
-        Almacen almacenElixir = aldea.getAlmacenElixir();
-        System.out.println("Cantidad de recurso Almacenado: ");
-        System.out.println("    - Oro: " + almacenOro.getAcumulado() + "  /  " + "  nivel: " + almacenOro.getNivel());
-        System.out.println("    - Elixir: " + almacenElixir.getAcumulado() + "  /  " + "nivel: " + almacenElixir.getNivel());
- 
-        // tropas
-        System.out.println("Cantidad de tropas en entrenamiento: " + aldea.getCuartel().getColaEntrenamiento());
-        System.out.println("Cantidad de tropas en campamento: " + aldea.getCampamento().getCantidadActualCampamento());
-
-        // numero de constructores disponibles
-        System.out.println("Constructores --- disponibles: " + aldea.getConstructor().getDisponibilidad() + "   /   total: " + aldea.getConstructor().getCapacidad());
-
         Event futuro = this.peekEvent();
         if (futuro != null) {
             futuro.print();
         } else {
             System.out.println("No hay eventos futuros");
         }
+
+        // recolectores
+        System.out.println("Mina: " + mina.getAcumulado() + "   Tasa de produccion: " + mina.getTasa() + "    nivel: " + mina.getNivel());
+        System.out.println("Extractor: " + extractor.getAcumulado() + "    Tasa de produccion: " + extractor.getTasa() + "    nivel: " + extractor.getNivel());
+        
+        // almacenes
+        System.out.println("Oro: " + almacenOro.getAcumulado() + "   " + "  nivel: " + almacenOro.getNivel());
+        System.out.println("Elixir: " + almacenElixir.getAcumulado() + "     " + "nivel: " + almacenElixir.getNivel());
+ 
+        // tropas
+        System.out.println("Cuartel entrenamiento: " + cuartel.getColaEntrenamiento() + "    capacidad: " + cuartel.getCapacidadMaxima());
+        System.out.println("Cantidad de tropas en campamento: " + campamento.getCantidadActualCampamento() + "    capacidad: " + campamento.getCapacidadMaxima());
+
+        // numero de constructores disponibles
+        System.out.println("Constructores disponibles: " + constructor.getDisponibilidad() + "   /   total: " + constructor.getCapacidad());
+
+        // TODO falta lo que es defensa, ataque la capacidad de estos
     }
 
     public void skipToNextEvent() {

@@ -16,18 +16,22 @@ public class App {
         
         while (resp != 'p') { // previous
             sim.printStatus();
-            System.out.println("Presione 'r' para recolectar recursos");
-            System.out.println("Presione 'c' para edificaciones");
-            System.out.println("Presione 'c' para defensas");
-            System.out.println("Presione 'a' para atacar a otra aldea");
-            
-            System.out.println("Presione 't' para entrenar una tropa");
-            
-            System.out.println("Presione 'e' para mejorar extractor");
-            System.out.println("Presione 'm' para mejorar mina");
-            System.out.println("Presione 'x' para mejorar almacen de oro");
-            System.out.println("Presione 'z' para mejorar almacen de elixir");
-            System.out.println("Presione 'p' para volver al menú principal");
+            System.out.println("'r' -> recolectar recursos");
+            System.out.println("'t' -> entrenar una tropa");
+            System.out.println("'e' -> mejorar extractor");
+            System.out.println("'m' -> mejorar mina");
+            System.out.println("'x' -> mejorar almacen de oro");
+            System.out.println("'z' -> para mejorar almacen de elixir");
+            System.out.println("'p' -> volver al menú principal");
+
+            System.out.println("'c' -> mejorar el cuartel");
+            System.out.println("'l' -> mejorar tropa en el laboratorio");
+
+
+            System.out.println("'b' -> mejorar constructor");
+
+            System.out.println("'d' -> mejorar defensas");
+            System.out.println("'a' -> atacar a otra aldea");
 
             try {
                 resp = scanner.next().charAt(0);
@@ -116,11 +120,11 @@ public class App {
 
             // Instrucciones para el usuario
             if (response != 'o') {
-                System.out.println("Presione 'x' para avance automático");
-                System.out.println("Presione 'n' para avanzar al siguiente evento");
-                System.out.println("Presione 'j' para avanzar un segundo");
-                System.out.println("Presione 'a' para eventos de aldea");
-                System.out.println("Presione 'q' para salir de la simulación");
+                System.out.println("'x' -> avance automático");
+                System.out.println("'n' -> avanzar al siguiente evento");
+                System.out.println("'j' -> avanzar un segundo");
+                System.out.println("'a' -> acceder al menú de la aldea");
+                System.out.println("'q' -> salir de la simulación");
             }   
             try {
                 if (response != 'o') {
