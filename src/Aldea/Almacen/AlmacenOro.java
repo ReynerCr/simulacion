@@ -4,15 +4,22 @@ public class AlmacenOro {
     private int max;
     private int nivel;
     private int acum;
+    private int tasaPerdida;
+    private int precio;
 
     public AlmacenOro(){
         this.max=10;
         this.nivel=1;
         this.acum=0;
+        this.tasaPerdida=1;
+        this.precio=nivel*5;
+    }
+
+    public void perder(){
+        this.acum = this.acum - (this.max * ((this.tasaPerdida)/10));
     }
 
     public void almacenar(int cantidadOro){
-        
         int entrada = this.acum + cantidadOro;
 
         if(max > entrada){
@@ -22,13 +29,11 @@ public class AlmacenOro {
         }
     }
 
-    public void upgrade(AlmacenElixir almacen){
-        int precio = this.nivel * 10;
-
-        if(almacen.consumir(precio)){
-            this.nivel = this.nivel + 1;
-            this.max = this.max + (this.nivel * 5);
-        }
+    public void upgrade(){
+        this.nivel = this.nivel + 1;
+        this.max = this.max + (this.nivel * 5);
+        this.tasaPerdida = tasaPerdida + 1;
+        this.precio = this.nivel * 5;
     }
 
     public boolean consumir(int cantidadOro){
@@ -47,4 +52,5 @@ public class AlmacenOro {
     public void setMax(int max){ this.max=max;}
     public void setNivel(int nivel){ this.nivel=nivel;}
     public void setAcum(int acum){ this.acum=acum;}
+    public int getPrecio(){ return this.precio; }
 }

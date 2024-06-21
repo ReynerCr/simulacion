@@ -19,6 +19,10 @@ public class App {
             System.out.println("Presione 'c' para defensas");
             System.out.println("Presione 't' para tropas");
             System.out.println("Presione 'a' para atacar a otra aldea");
+            System.out.println("Presione 'e' para mejorar extractor");
+            System.out.println("Presione 'm' para mejorar mina");
+            System.out.println("Presione 'x' para mejorar almacen de oro");
+            System.out.println("Presione 'z' para mejorar almacen de elixir");
             System.out.println("Presione 'p' para volver al menú principal");
 
             try {
@@ -37,6 +41,22 @@ public class App {
                     break;
                 case 'c':
                     System.out.println("Construyendo edificaciones...");
+                    break;
+                case 'e':
+                    System.out.println("Mejorando extractor...");
+                    sim.aldeaUpgradeExtractor();
+                    break;
+                case 'm':
+                    System.out.println("Mejorando mina...");
+                    sim.aldeaUpgradeMina();
+                    break;
+                case 'x':
+                    System.out.println("Mejorando almacen de oro...");
+                    sim.aldeaUpgradeAlmacenOro();
+                    break;
+                case 'z':
+                    System.out.println("Mejorando almacen de elixir...");
+                    sim.aldeaUpgradeAlmacenElixir();
                     break;
                 case 't':
                     System.out.println("Entrenando tropas...");

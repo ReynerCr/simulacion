@@ -72,8 +72,8 @@ public class Aldea {
     }
 
     public void recolectar(){
-        almacenElixir.almacenar(extractor.getElixirRecolectado());
-        almacenOro.almacenar(mina.getOroRecolectado());
+        almacenElixir.almacenar(extractor.getAcum());
+        almacenOro.almacenar(mina.getAcum());
         extractor.vaciar();
         mina.vaciar();
     }
@@ -95,11 +95,11 @@ public class Aldea {
     }
 
     public void upgradeAlmacenElixir(){
-        this.almacenElixir.upgrade(almacenOro);
+        this.almacenElixir.upgrade();
     }
 
     public void upgradeAlmacenOro(){
-        this.almacenOro.upgrade(almacenElixir);
+        this.almacenOro.upgrade();
     }
 
     public void upgradeCuartel(){

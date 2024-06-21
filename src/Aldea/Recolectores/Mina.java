@@ -6,13 +6,15 @@ public class Mina {
     private int capacidadMaxima;
     private int oroRecolectado;
     private int tasaPerdida;
+    private int precio;
 
     public Mina(int tasaProduccionOro){
         this.tasaProduccionOro = tasaProduccionOro;
         this.nivel = 1;
         this.capacidadMaxima = 10;
         this.oroRecolectado = 0;
-        this.tasaPerdida= 1;     
+        this.tasaPerdida = 1;
+        this.precio = nivel * 5;
     }
   
     public void producir(){
@@ -32,6 +34,7 @@ public class Mina {
         this.tasaProduccionOro = this.tasaProduccionOro + (this.nivel * 2);
         this.capacidadMaxima = this.capacidadMaxima + (this.nivel * 5);
         this.tasaPerdida = this.tasaPerdida + this.tasaPerdida * 2;
+        this.precio = this.nivel * 5;
     }
 
     public void vaciar(){
@@ -52,5 +55,7 @@ public class Mina {
 
     public int getCapacidadMaxima(){ return this.capacidadMaxima;}
 
-    public int getOroRecolectado(){ return this.oroRecolectado;}
+    public int getAcum(){ return this.oroRecolectado;}
+
+    public int getPrecio() { return this.precio; }
 }

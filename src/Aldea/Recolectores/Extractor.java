@@ -1,18 +1,20 @@
 package Aldea.Recolectores;
 
 public class Extractor {
-    
     private int nivel;
     private int tasaProduccionElixir;
     private int capacidadMaxima;
     private int elixirRecolectado;
     private int tasaPerdida;
+    private int precio;
 
     public Extractor(int tasaProduccionElixir){
+        this.nivel = 1;
         this.tasaProduccionElixir = tasaProduccionElixir;
         this.capacidadMaxima = 10;
         this.elixirRecolectado = 0;
         this.tasaProduccionElixir = 1;
+        this.precio = nivel * 5;
     }
 
     public void producir(){
@@ -27,6 +29,7 @@ public class Extractor {
         this.tasaProduccionElixir = this.tasaProduccionElixir + (this.nivel * 2);
         this.capacidadMaxima = this.capacidadMaxima + (this.nivel * 5);
         this.tasaPerdida = this.tasaPerdida + (this.tasaPerdida * 2);
+        this.precio = this.nivel * 5;
     }
 
     public void perder(){
@@ -50,6 +53,7 @@ public class Extractor {
 
     public int getCapacidadMaxima(){ return this.capacidadMaxima;}
 
-    public int getElixirRecolectado(){ return this.elixirRecolectado;}
+    public int getAcum(){ return this.elixirRecolectado;}
 
+    public int getPrecio() { return this.precio; }
 }

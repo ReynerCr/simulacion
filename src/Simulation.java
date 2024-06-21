@@ -4,6 +4,8 @@ import java.util.Comparator;
 
 
 import Aldea.Aldea;
+import Aldea.Almacen.*;
+import Aldea.Recolectores.*;
 
 // Clase comparadora para ordenar eventos por tiempo de ocurrencia
 class SortByTimeToHappen implements Comparator<Event> {
@@ -57,17 +59,65 @@ public class Simulation {
     }
 
     public void aldeaConstruir() {
-        // TODO falta construir
+        // TODO falta construir, ¿construir qué?
         Event e = new Event(time, 5, "Construir", (event) -> {
             //aldea.construir();
         });
         addEvent(e);
     }
 
-    public void aldeaUpgrade() {
-        // TODO falta upgrade
-        Event e = new Event(time, 5, "Upgrade", (event) -> {
-            //aldea.upgrade();
+    public void aldeaUpgradeExtractor() {
+        Extractor extractor = aldea.getExtractor();
+        int precio = extractor.getPrecio();
+        boolean mejora = aldea.getAlmacenOro().consumir(precio);
+        if (!mejora) {
+            System.out.println("No hay suficiente oro para mejorar el extractor");
+            return;
+        }
+        Event e = new Event(time, 5, "Mejora del extractor", (event) -> {
+           extractor.upgrade();
+        });
+        addEvent(e);
+    }
+
+    public void aldeaUpgradeMina() {
+        Mina mina = aldea.getMina();
+        int precio = mina.getPrecio();
+        boolean mejora = aldea.getAlmacenElixir().consumir(precio);
+        if (!mejora) {
+            System.out.println("No hay suficiente elixir para mejorar la mina");
+            return;
+        }
+        Event e = new Event(time, 5, "Mejora de la mina", (event) -> {
+            mina.upgrade();
+        });
+        addEvent(e);
+    }
+
+    public void aldeaUpgradeAlmacenOro() {
+        AlmacenOro almacen = aldea.getAlmacenOro();
+        int precio = almacen.getPrecio();
+        boolean mejora = aldea.getAlmacenElixir().consumir(precio);
+        if (!mejora) {
+            System.out.println("No hay suficiente elixir para mejorar el almacen de oro");
+            return;
+        }
+        Event e = new Event(time, 5, "Mejora de almacen de oro", (event) -> {
+            almacen.upgrade();
+        });
+        addEvent(e);
+    }
+
+    public void aldeaUpgradeAlmacenElixir() {
+        AlmacenElixir almacen = aldea.getAlmacenElixir();
+        int precio = almacen.getPrecio();
+        boolean mejora = aldea.getAlmacenOro().consumir(precio);
+        if (!mejora) {
+            System.out.println("No hay suficiente oro para mejorar el almacen de elixir");
+            return;
+        }
+        Event e = new Event(time, 5, "Mejora de almacen de elixir", (event) -> {
+            almacen.upgrade();
         });
         addEvent(e);
     }
@@ -81,16 +131,25 @@ public class Simulation {
 
     public void printStatus() {
         System.out.println("Tiempo: " + time);
-        System.out.println("Cantidad de recurso recolectado: ");
-        System.out.println("    - Oro: " + aldea.getExtractor().getElixirRecolectado());
-        System.out.println("    - Elixir: " + aldea.getMina().getOroRecolectado());
+        
+        // recolectores
+        System.out.println("Recolectores de recursos: ");
+        Mina mina = aldea.getMina();
+        Extractor extractor = aldea.getExtractor();
+
+        System.out.println("    - Oro: " + mina.getAcum() + " / Tasa de produccion: " + mina.getTasa() + "    nivel: " + mina.getNivel());
+        System.out.println("    - Elixir: " + extractor.getAcum() + "  /  Tasa de produccion: " + extractor.getTasaProduccionElixir() + "    nivel: " + extractor.getNivel());
+        
+        // almacenes
+        AlmacenOro almacenOro = aldea.getAlmacenOro();
+        AlmacenElixir almacenElixir = aldea.getAlmacenElixir();
         System.out.println("Cantidad de recurso Almacenado: ");
-        System.out.println("    - Oro: " + aldea.getAlmacenOro().getAcum());
-        System.out.println("    - Elixir: " + aldea.getAlmacenElixir().getAcum());
-
-        System.out.println("Cantidad de tropas entrenamiento: " + aldea.getCuartel().getColaEntrenamiento());
-        System.out.println("Cantidad de tropas listas: " + aldea.getCampamento().getCantidadActualCampamento());
-
+        System.out.println("    - Oro: " + almacenOro.getAcum() + "  /  " + "  nivel: " + almacenOro.getNivel());
+        System.out.println("    - Elixir: " + almacenElixir.getAcum() + "  /  " + "nivel: " + almacenElixir.getNivel());
+ 
+        // tropas
+        System.out.println("Cantidad de tropas en entrenamiento: " + aldea.getCuartel().getColaEntrenamiento());
+        System.out.println("Cantidad de tropas en campamento: " + aldea.getCampamento().getCantidadActualCampamento());
 
         Event futuro = this.peekEvent();
         if (futuro != null) {
