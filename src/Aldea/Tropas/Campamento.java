@@ -4,18 +4,15 @@ import Aldea.Edificio;
 import Aldea.TipoEdificio;
 
 public class Campamento extends Edificio {
-
     private int capacidadMaxima;
     private int cantidadActualCampamento;
-    private int nivelCampamento;
-    private int nivelAtaque;
+    private int capacidadAtaque;
 
     public Campamento() {
         super(1, 5, 2, TipoEdificio.CAMPAMENTO, TipoEdificio.ALMACEN_ELIXIR);
-        this.capacidadMaxima = 10;
+        this.capacidadMaxima = 10 * nivel;
         this.cantidadActualCampamento = 0;
-        this.nivelCampamento = 1;
-        this.nivelAtaque = 0;
+        this.capacidadAtaque = 1 * cantidadActualCampamento;
     }
 
     // TODO cuidado con la cantidad de tropas
@@ -28,10 +25,17 @@ public class Campamento extends Edificio {
         }
     }
 
+    public void calcularAtaque(int nivelLaboratorio) {
+        this.capacidadAtaque = nivelLaboratorio * cantidadActualCampamento;
+    }
+
     public void upgrade() {
         upgradeEdificio();
         this.capacidadMaxima += this.nivel * 5;
-        this.nivelCampamento += 1;
+    }
+
+    public void aumentarAtaque() {
+        this.capacidadAtaque += 1;
     }
 
     public void vaciar() {
@@ -46,12 +50,8 @@ public class Campamento extends Edificio {
         return cantidadActualCampamento;
     }
 
-    public int getNivelCampamento() {
-        return nivelCampamento;
-    }
-
-    public int getNivelAtaque() {
-        return nivelAtaque;
+    public int getCapacidadAtaque() {
+        return capacidadAtaque;
     }
 
     public int setCapacidadMaxima() {
@@ -62,11 +62,7 @@ public class Campamento extends Edificio {
         return this.cantidadActualCampamento;
     }
 
-    public int setNivelCampamento() {
-        return this.nivelCampamento;
-    }
-
     public int setNivelAtaque() {
-        return this.nivelAtaque;
+        return this.capacidadAtaque;
     }
 }

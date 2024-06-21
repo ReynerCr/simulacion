@@ -25,6 +25,10 @@ public class Laboratorio extends Edificio {
         upgradeEdificio();
     }
 
+    public boolean getDisponibilidad() {
+        return this.cantidadTropas < this.capacidadMaxima;
+    }
+
     public void eliminar() {
         this.cantidadTropas -= 1;
     }

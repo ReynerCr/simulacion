@@ -11,7 +11,7 @@ import Aldea.Tropas.Campamento;
 import Aldea.Tropas.Cuartel;
 import Aldea.Tropas.Laboratorio;
 import Aldea.Constructor.Constructor;
-import Aldea.Defensas.Defensas;
+import Aldea.Defensas.Defensa;
 
 // Clase comparadora para ordenar eventos por tiempo de ocurrencia
 class SortByTimeToHappen implements Comparator<Event> {
@@ -43,7 +43,7 @@ public class Simulation {
     private Campamento campamento;
     private Constructor constructor;
     private Laboratorio laboratorio;
-    private Defensas defensa;
+    private Defensa defensa;
 
     public Simulation(int time, int TIME_LIMIT, int seed, int lambda) {
         this.time = time;
@@ -123,14 +123,20 @@ public class Simulation {
         System.out.println("Oro: " + almacenOro.getAcumulado() + "   " + "  nivel: " + almacenOro.getNivel());
         System.out.println("Elixir: " + almacenElixir.getAcumulado() + "     " + "nivel: " + almacenElixir.getNivel());
  
+        // laboratorio
+        System.out.println("Laboratorio: " + (
+            laboratorio.getDisponibilidad() == true ? "disponible" : "ocupado")
+                + "    nivel de tropas: " + laboratorio.getNivel());
+
         // tropas
         System.out.println("Cuartel entrenamiento: " + cuartel.getColaEntrenamiento() + "    capacidad: " + cuartel.getCapacidadMaxima());
-        System.out.println("Cantidad de tropas en campamento: " + campamento.getCantidadActualCampamento() + "    capacidad: " + campamento.getCapacidadMaxima());
+        System.out.println("Cantidad de tropas en campamento: " + campamento.getCantidadActualCampamento() + "    capacidad: " + campamento.getCapacidadMaxima() + "    capacidad de ataque: " + campamento.getCapacidadAtaque());
 
         // numero de constructores disponibles
         System.out.println("Constructores disponibles: " + constructor.getDisponibilidad() + "   /   total: " + constructor.getCapacidad());
 
-        // TODO falta lo que es defensa, ataque la capacidad de estos
+        // defensas
+        System.out.println("Defensas: nivel " + defensa.getNivel() + "    capacidad de defensa: " + defensa.getCapacidadDefensa());
     }
 
     public void skipToNextEvent() {

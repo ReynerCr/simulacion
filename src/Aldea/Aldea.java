@@ -18,7 +18,7 @@ public class Aldea {
         this.edificios = new HashMap<TipoEdificio, Edificio>();
         Recolector extractor = new Recolector(1, TipoEdificio.EXTRACTOR);
         Recolector mina = new Recolector(1, TipoEdificio.MINA);
-        Defensas defensa = new Defensas();
+        Defensa defensa = new Defensa();
         Constructor constructor = new Constructor();
         Almacen almacenElixir = new Almacen(TipoEdificio.ALMACEN_ELIXIR);
         Almacen almacenOro = new Almacen(TipoEdificio.ALMACEN_ORO);
@@ -124,7 +124,7 @@ public class Aldea {
 
     public Recolector getExtractor() { return (Recolector) edificios.get(TipoEdificio.EXTRACTOR); }
 
-    public Defensas getDefensa() { return (Defensas) edificios.get(TipoEdificio.DEFENSA); }
+    public Defensa getDefensa() { return (Defensa) edificios.get(TipoEdificio.DEFENSA); }
 
     public Cuartel getCuartel() { return (Cuartel) edificios.get(TipoEdificio.CUARTEL); }
 
