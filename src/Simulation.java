@@ -67,8 +67,8 @@ public class Simulation {
     }
 
     public void aldeaUpgradeExtractor() {
-        Extractor extractor = aldea.getExtractor();
-        int precio = extractor.getPrecio();
+        Recolector extractor = aldea.getExtractor();
+        int precio = extractor.getPrecioMejora();
         boolean mejora = aldea.getAlmacenOro().consumir(precio);
         if (!mejora) {
             System.out.println("No hay suficiente oro para mejorar el extractor");
@@ -81,8 +81,8 @@ public class Simulation {
     }
 
     public void aldeaUpgradeMina() {
-        Mina mina = aldea.getMina();
-        int precio = mina.getPrecio();
+        Recolector mina = aldea.getMina();
+        int precio = mina.getPrecioMejora();
         boolean mejora = aldea.getAlmacenElixir().consumir(precio);
         if (!mejora) {
             System.out.println("No hay suficiente elixir para mejorar la mina");
@@ -95,8 +95,8 @@ public class Simulation {
     }
 
     public void aldeaUpgradeAlmacenOro() {
-        AlmacenOro almacen = aldea.getAlmacenOro();
-        int precio = almacen.getPrecio();
+        Almacen almacen = aldea.getAlmacenOro();
+        int precio = almacen.getPrecioMejora();
         boolean mejora = aldea.getAlmacenElixir().consumir(precio);
         if (!mejora) {
             System.out.println("No hay suficiente elixir para mejorar el almacen de oro");
@@ -109,8 +109,8 @@ public class Simulation {
     }
 
     public void aldeaUpgradeAlmacenElixir() {
-        AlmacenElixir almacen = aldea.getAlmacenElixir();
-        int precio = almacen.getPrecio();
+        Almacen almacen = aldea.getAlmacenElixir();
+        int precio = almacen.getPrecioMejora();
         boolean mejora = aldea.getAlmacenOro().consumir(precio);
         if (!mejora) {
             System.out.println("No hay suficiente oro para mejorar el almacen de elixir");
@@ -134,18 +134,18 @@ public class Simulation {
         
         // recolectores
         System.out.println("Recolectores de recursos: ");
-        Mina mina = aldea.getMina();
-        Extractor extractor = aldea.getExtractor();
+        Recolector mina = aldea.getMina();
+        Recolector extractor = aldea.getExtractor();
 
-        System.out.println("    - Oro: " + mina.getAcum() + " / Tasa de produccion: " + mina.getTasa() + "    nivel: " + mina.getNivel());
-        System.out.println("    - Elixir: " + extractor.getAcum() + "  /  Tasa de produccion: " + extractor.getTasaProduccionElixir() + "    nivel: " + extractor.getNivel());
+        System.out.println("    - Oro: " + mina.getAcumulado() + " / Tasa de produccion: " + mina.getTasa() + "    nivel: " + mina.getNivel());
+        System.out.println("    - Elixir: " + extractor.getAcumulado() + "  /  Tasa de produccion: " + extractor.getTasa() + "    nivel: " + extractor.getNivel());
         
         // almacenes
-        AlmacenOro almacenOro = aldea.getAlmacenOro();
-        AlmacenElixir almacenElixir = aldea.getAlmacenElixir();
+        Almacen almacenOro = aldea.getAlmacenOro();
+        Almacen almacenElixir = aldea.getAlmacenElixir();
         System.out.println("Cantidad de recurso Almacenado: ");
-        System.out.println("    - Oro: " + almacenOro.getAcum() + "  /  " + "  nivel: " + almacenOro.getNivel());
-        System.out.println("    - Elixir: " + almacenElixir.getAcum() + "  /  " + "nivel: " + almacenElixir.getNivel());
+        System.out.println("    - Oro: " + almacenOro.getAcumulado() + "  /  " + "  nivel: " + almacenOro.getNivel());
+        System.out.println("    - Elixir: " + almacenElixir.getAcumulado() + "  /  " + "nivel: " + almacenElixir.getNivel());
  
         // tropas
         System.out.println("Cantidad de tropas en entrenamiento: " + aldea.getCuartel().getColaEntrenamiento());
@@ -205,8 +205,8 @@ public class Simulation {
         return futureEvents.isEmpty();
     }
 
+    // revisar si hay eventos que deben ocurrir en este instante
     public ArrayList<Event>runEvents() {
-        // revisar si hay eventos que deben ocurrir en este instante
         ArrayList <Event> events = new ArrayList<Event>();
         while (!futureEvents.isEmpty() && futureEvents.peek().getTimeToHappen() == time) {
             Event event = futureEvents.poll();

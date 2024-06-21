@@ -17,8 +17,10 @@ public class App {
             System.out.println("Presione 'r' para recolectar recursos");
             System.out.println("Presione 'c' para edificaciones");
             System.out.println("Presione 'c' para defensas");
-            System.out.println("Presione 't' para tropas");
             System.out.println("Presione 'a' para atacar a otra aldea");
+            
+            System.out.println("Presione 't' para entrenar una tropa");
+            
             System.out.println("Presione 'e' para mejorar extractor");
             System.out.println("Presione 'm' para mejorar mina");
             System.out.println("Presione 'x' para mejorar almacen de oro");

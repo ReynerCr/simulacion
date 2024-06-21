@@ -8,23 +8,23 @@ import Aldea.Constructor.*;
 import Aldea.Almacen.*;
 
 public class Aldea {
-    private Extractor extractor;
-    private Mina mina;
+    private Recolector extractor;
+    private Recolector mina;
     private Defensas defensa;
     private Constructor constructor;
-    private AlmacenElixir almacenElixir;
-    private AlmacenOro almacenOro;
+    private Almacen almacenElixir;
+    private Almacen almacenOro;
     private Campamento campamento;
     private Cuartel cuartel;
     private Laboratorio laboratorio;
 
     public Aldea(){
-        this.extractor = new Extractor(1);
-        this.mina = new Mina(1);
+        this.extractor = new Recolector(1);
+        this.mina = new Recolector(1);
         this.defensa = new Defensas();
         this.constructor = new Constructor();
-        this.almacenElixir = new AlmacenElixir();
-        this.almacenOro = new AlmacenOro();
+        this.almacenElixir = new Almacen();
+        this.almacenOro = new Almacen();
         this.campamento = new Campamento();
         this.cuartel = new Cuartel();
         this.laboratorio = new Laboratorio();
@@ -35,11 +35,11 @@ public class Aldea {
         extractor.producir();
     }
 
-    public Mina getMina() {
+    public Recolector getMina() {
         return mina;
     }
 
-    public Extractor getExtractor() {
+    public Recolector getExtractor() {
         return extractor;
     }
 
@@ -51,11 +51,11 @@ public class Aldea {
         return constructor;
     }
 
-    public AlmacenElixir getAlmacenElixir() {
+    public Almacen getAlmacenElixir() {
         return almacenElixir;
     }
 
-    public AlmacenOro getAlmacenOro() {
+    public Almacen getAlmacenOro() {
         return almacenOro;
     }
 
@@ -72,8 +72,8 @@ public class Aldea {
     }
 
     public void recolectar(){
-        almacenElixir.almacenar(extractor.getAcum());
-        almacenOro.almacenar(mina.getAcum());
+        almacenElixir.almacenar(extractor.getAcumulado());
+        almacenOro.almacenar(mina.getAcumulado());
         extractor.vaciar();
         mina.vaciar();
     }
@@ -112,5 +112,14 @@ public class Aldea {
 
     public void getNumTropas() {
         this.cuartel.getColaEntrenamiento();
+    }
+
+    public boolean encolarConstruccion(int nEdificios){
+        boolean encolado = constructor.aumentarCola(nEdificios);
+        if (!encolado) {
+            System.out.println("Error: la cola de constructores está llena");
+            return true;
+        }
+        return false;
     }
 }

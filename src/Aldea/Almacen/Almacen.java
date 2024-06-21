@@ -1,31 +1,31 @@
 package Aldea.Almacen;
 
-public class AlmacenOro {
+public class Almacen {
     private int max;
     private int nivel;
-    private int acum;
+    private int acumulado;
     private int tasaPerdida;
     private int precio;
 
-    public AlmacenOro(){
+    public Almacen(){
         this.max=10;
         this.nivel=1;
-        this.acum=0;
+        this.acumulado=0;
         this.tasaPerdida=1;
-        this.precio=nivel*5;
+        this.precio = nivel * 5;
     }
 
     public void perder(){
-        this.acum = this.acum - (this.max * ((this.tasaPerdida)/10));
+        this.acumulado = this.acumulado - (this.max * ((this.tasaPerdida)/10));
     }
 
-    public void almacenar(int cantidadOro){
-        int entrada = this.acum + cantidadOro;
+    public void almacenar(int cantidad){
+        int entrada = this.acumulado + cantidad;
 
         if(max > entrada){
-            this.acum=entrada;
+            this.acumulado=entrada;
         } else {
-            this.acum=max;
+            this.acumulado=max;
         }
     }
 
@@ -36,21 +36,21 @@ public class AlmacenOro {
         this.precio = this.nivel * 5;
     }
 
-    public boolean consumir(int cantidadOro){
-        if(cantidadOro > this.acum){
+    public boolean consumir(int cantidad){
+        if(cantidad > this.acumulado){
             return false;
         }
         else{
-            this.acum = this.acum - cantidadOro;
+            this.acumulado = this.acumulado - cantidad;
             return true;
         }
     }
 
     public int getMax(){ return this.max;}
     public int getNivel(){ return this.nivel;}
-    public int getAcum(){ return this.acum;}
+    public int getAcumulado(){ return this.acumulado;}
     public void setMax(int max){ this.max=max;}
     public void setNivel(int nivel){ this.nivel=nivel;}
-    public void setAcum(int acum){ this.acum=acum;}
-    public int getPrecio(){ return this.precio; }
+    public void setAcumulado(int acumulado){ this.acumulado=acumulado;}
+    public int getPrecioMejora(){ return this.precio; }
 }
