@@ -86,14 +86,6 @@ public class Simulation {
         addEvent(e);
     }
 
-    public void aldeaConstruir() {
-        // TODO falta construir, ¿construir qué?
-        Event e = new Event(time, 5, "Construir", (event) -> {
-            //aldea.construir();
-        });
-        addEvent(e);
-    }
-
     public void aldeaUpgradeEdificio(TipoEdificio tipo) {
         Edificio edificio = aldea.upgradeEdificio(tipo);
         if (edificio == null) {
