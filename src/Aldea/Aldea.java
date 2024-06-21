@@ -110,10 +110,6 @@ public class Aldea {
         this.defensa.aumentar();
     }
 
-    public void entrenarTropa(){
-        this.cuartel.aumentarCola(1);
-    }
-
     public void getNumTropas() {
         this.cuartel.getColaEntrenamiento();
     }

@@ -14,12 +14,13 @@ public class Campamento {
             this.nivelAtaque=0;
         }
 
+        // TODO cuidado con la cantidad de tropas
         public void agregar(Cuartel cuartel){
             int entrada = cantidadActualCampamento + 1;
 
-            if(capacidadMaxima<entrada){
-               this.cantidadActualCampamento+=1;
-               cuartel.disminuirCola(); 
+            if(capacidadMaxima > entrada){
+               this.cantidadActualCampamento = entrada;
+               cuartel.disminuirCola(1); 
             }
         }
 

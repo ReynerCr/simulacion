@@ -41,33 +41,42 @@ public class Simulation {
     }
 
     public void aldeaEntrenarTropa() {
-        aldea.entrenarTropa();
-        Event e = new Event(time, 5, "Entrenar tropa");
+        aldea.getCuartel().aumentarCola(1);
+        Event e = new Event(time, 2, "Entrenar tropa", (event) -> {
+            aldea.getCampamento().agregar(aldea.getCuartel());
+        });
         addEvent(e);
     }
 
     public void aldeaAtacar() {
         // TODO falta atacar
-        Event e = new Event(time, 5, "Atacar");
+        Event e = new Event(time, 5, "Atacar", (event) -> {
+            //aldea.atacar();
+        });
         addEvent(e);
     }
 
     public void aldeaConstruir() {
         // TODO falta construir
-        Event e = new Event(time, 5, "Construir");
+        Event e = new Event(time, 5, "Construir", (event) -> {
+            //aldea.construir();
+        });
         addEvent(e);
     }
 
     public void aldeaUpgrade() {
         // TODO falta upgrade
-        Event e = new Event(time, 5, "Upgrade");
+        Event e = new Event(time, 5, "Upgrade", (event) -> {
+            //aldea.upgrade();
+        });
         addEvent(e);
     }
 
     public void aldeaRecolectar() {
-        Event e = new Event(time, 0, "Recolectar recursos");
+        Event e = new Event(time, 0, "Recolectar recursos", (event) -> {
+            aldea.recolectar();
+        });
         addEvent(e);
-        aldea.recolectar();
     }
 
     public void printStatus() {
@@ -84,7 +93,11 @@ public class Simulation {
 
 
         Event futuro = this.peekEvent();
-        System.out.println("Siguiente evento: " + (futuro == null ? "Ninguno" : futuro.getDescription() + " en " + (futuro.getTimeToHappen() - time) + " segundos"));
+        if (futuro != null) {
+            futuro.print();
+        } else {
+            System.out.println("No hay eventos futuros");
+        }
     }
 
     public void skipToNextEvent() {
@@ -140,6 +153,7 @@ public class Simulation {
             Event event = futureEvents.poll();
             events.add(event);
             System.out.println("Ejecutando evento: " + event.getDescription());
+            event.execute();
         }
         return events;
     }

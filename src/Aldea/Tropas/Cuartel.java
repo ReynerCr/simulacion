@@ -23,8 +23,13 @@ public class Cuartel {
         }
     }
 
-    public void disminuirCola(){
-        this.colaEntrenamiento = this.colaEntrenamiento - 1;
+    // TODO cuidado con la cantidad de tropas
+    public void disminuirCola(int cantidad){
+        if (cantidad < this.colaEntrenamiento){
+            this.colaEntrenamiento = this.colaEntrenamiento - cantidad;
+        } else {
+            this.colaEntrenamiento = 0;
+        }
     }
 
     public void upgrade(){
