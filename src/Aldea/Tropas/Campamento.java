@@ -17,17 +17,16 @@ public class Campamento extends Edificio {
         this.capacidadAtaque = this.ataqueTropa * this.cantidadActualCampamento;
     }
 
-    public void agregar(Cuartel cuartel) {
-        int entrada = cantidadActualCampamento + 1;
-
-        if (capacidadMaxima >= entrada) {
-            this.cantidadActualCampamento = entrada;
-            cuartel.disminuirCola(1);
+    public boolean agregar(Cuartel cuartel) {
+        if (capacidadMaxima <= cantidadActualCampamento || !cuartel.sacarTropaEntrenada()) {
+            return false;
         }
+        ++cantidadActualCampamento;
+        return true;
     }
 
     public void calcularAtaque(int nivelLaboratorio) {
-        this.capacidadAtaque = (nivelLaboratorio * 5 + ataqueTropa)  * cantidadActualCampamento;
+        this.capacidadAtaque = (nivelLaboratorio * 5 + ataqueTropa) * cantidadActualCampamento;
     }
 
     public void upgrade() {

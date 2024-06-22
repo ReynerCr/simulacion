@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.PriorityQueue;
+import java.util.Random;
 import java.util.Comparator;
 
 import Aldea.Aldea;
@@ -34,6 +35,8 @@ public class Simulation {
     private Exponential exp;
     private Aldea aldea;
 
+    private Random random;
+
     // punteros a los edificios de la aldea para facilitar el acceso
     private Recolector mina;
     private Recolector extractor;
@@ -50,6 +53,7 @@ public class Simulation {
         this.TIME_LIMIT = TIME_LIMIT;
         this.exp = new Exponential(seed, lambda);
         this.aldea = new Aldea();
+        this.random = new Random(seed);
 
         // punteros a los edificios de la aldea
         this.mina = aldea.getMina();
@@ -71,25 +75,29 @@ public class Simulation {
     }
 
     public void aldeaEntrenarTropa() {
-        cuartel.aumentarCola(1);
+        if (!cuartel.aumentarCola()) {
+            return;
+        }
         Event e = new Event(time, 2, "Entrenar tropa", (event) -> {
-            campamento.agregar(cuartel);
-            campamento.calcularAtaque(laboratorio.getNivel());
+            cuartel.finalizarEntrenamiento();
+            if (campamento.agregar(cuartel)) {
+                campamento.calcularAtaque(laboratorio.getNivel());
+            }
         });
         addEvent(e);
     }
 
     public void aldeaAtacar() {
-        Event e = new Event(time, 2, "Resultado de ataque", (event) -> {
-            aldea.atacarRival();
+        Event e = new Event(time, 1, "Resultado de ataque", (event) -> {
+            aldea.atacarRival(random);
         });
         addEvent(e);
     }
 
     public void aldeaDefender() {
 
-        Event e = new Event(time, 2, "Resultado de defensa", (event) -> {
-            aldea.defenderDeRival();
+        Event e = new Event(time, 1, "Resultado de defensa", (event) -> {
+            aldea.defenderDeRival(random);
         });
         addEvent(e);
     }
@@ -131,31 +139,32 @@ public class Simulation {
 
         // recolectores
         System.out.printf("%-34.34s  %-25.25s %-30.30s%n", "Mina: oro " + mina.getAcumulado(),
-                "Tasa de produccion: " + mina.getTasa(), "nivel: " + mina.getNivel());
+                "Tasa de produccion: " + mina.getTasa(), "nivel " + mina.getNivel());
         System.out.printf("%-34.34s  %-25.25s %-30.30s%n", "Extractor: " + extractor.getAcumulado(),
-                "Tasa de produccion: " + extractor.getTasa(), "nivel: " + extractor.getNivel());
+                "Tasa de produccion " + extractor.getTasa(), "nivel " + extractor.getNivel());
         // almacenes
         System.out.printf("%-34.34s  %-30.30s%n", "Almacen oro: almacenado " + almacenOro.getAcumulado(),
-                "nivel: " + almacenOro.getNivel());
+                "nivel " + almacenOro.getNivel());
         System.out.printf("%-34.34s  %-30.30s%n", "Almacen elixir: almacenado " + almacenElixir.getAcumulado(),
-                "nivel: " + almacenElixir.getNivel());
+                "nivel " + almacenElixir.getNivel());
         // laboratorio
         System.out.printf("%-34.34s  %-30.30s%n",
                 "Laboratorio: " + (laboratorio.getDisponibilidad() == true ? "disponible" : "ocupado"),
-                "nivel de tropas: " + laboratorio.getNivel());
+                "nivel de tropas " + laboratorio.getNivel());
         // tropas
-        System.out.printf("%-34.34s  %-30.30s%n", "Cuartel entrenamiento cola:" + cuartel.getColaEntrenamiento(),
-                "capacidad: " + cuartel.getCapacidadMaxima());
         System.out.printf("%-34.34s  %-25.25s %-30.30s%n",
-                "Cantidad de tropas en campamento: " + campamento.getCantidadActualCampamento(),
-                "capacidad: " + campamento.getCapacidadMaxima(),
-                "capacidad de ataque: " + campamento.getCapacidadAtaque());
+                "Cuartel entrenamiento: cola " + cuartel.getColaEntrenamiento(),
+                "capacidad " + cuartel.getCapacidadMaxima(), "tropas entrenadas " + cuartel.getTropasEntrenadas());
+        System.out.printf("%-34.34s  %-25.25s %-30.30s%n",
+                "Campamento: cantidad " + campamento.getCantidadActualCampamento(),
+                "capacidad " + campamento.getCapacidadMaxima(),
+                "capacidad de ataque " + campamento.getCapacidadAtaque());
         // numero de constructores disponibles
-        System.out.printf("%-34.34s  %-30.30s%n", "Constructores disponibles: " + constructor.getDisponibilidad(),
-                "total: " + constructor.getCapacidad());
+        System.out.printf("%-34.34s  %-30.30s%n", "Constructores: disponibles " + constructor.getDisponibilidad(),
+                "total " + constructor.getCapacidad());
         // defensas
         System.out.printf("%-34.34s  %-30.30s%n", "Defensas: nivel " + defensa.getNivel(),
-                "capacidad de defensa: " + defensa.getCapacidadDefensa());
+                "capacidad de defensa " + defensa.getCapacidadDefensa());
     }
 
     public void skipToNextEvent() {

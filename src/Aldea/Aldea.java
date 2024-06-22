@@ -17,8 +17,8 @@ public class Aldea {
 
     public Aldea() {
         this.edificios = new HashMap<TipoEdificio, Edificio>();
-        Recolector extractor = new Recolector(1, TipoEdificio.EXTRACTOR);
-        Recolector mina = new Recolector(1, TipoEdificio.MINA);
+        Recolector extractor = new Recolector(10, TipoEdificio.EXTRACTOR);
+        Recolector mina = new Recolector(10, TipoEdificio.MINA);
         Defensa defensa = new Defensa();
         Constructor constructor = new Constructor();
         Almacen almacenElixir = new Almacen(TipoEdificio.ALMACEN_ELIXIR);
@@ -186,16 +186,19 @@ public class Aldea {
         return rival;
     }
 
-    public void atacarRival() {
-        Random rand = new Random(43);
+    public void atacarRival(Random rand) {
         Aldea rival = crearAldeaRandom(rand);
         ataque(this, rival, rand);
+        System.out.println("----------------------- Fin del ataque -----------------------");
+
+        // si tengo tropas entrenadas, las envio paso a campamento
+        while (getCampamento().agregar(getCuartel())) { }
     }
 
-    public void defenderDeRival() {
-        Random rand = new Random(43);
+    public void defenderDeRival(Random rand) {
         Aldea rival = crearAldeaRandom(rand);
-        ataque(this, rival, rand);
+        ataque(rival, this, rand);
+        System.out.println("----------------------- Fin de defensa -----------------------");
     }
 
     private void ataque(Aldea atacante, Aldea defensor, Random rand) {
@@ -207,48 +210,70 @@ public class Aldea {
         
         // ahora si se puede atacar
         int defensorCapacidad = defensor.getDefensa().getCapacidadDefensa();
-        boolean victoria;
+        boolean victoriaAtacante;
         if (atacanteCapacidad == defensorCapacidad) {
-            victoria = rand.nextBoolean(); // 50% de probabilidad
+            victoriaAtacante = rand.nextBoolean(); // 50% de probabilidad
+            System.out.println("Empate entonces probabilidad 50%");
         } else {
-            victoria = atacanteCapacidad > defensorCapacidad;
+            victoriaAtacante = atacanteCapacidad > defensorCapacidad;
+            System.out.println("Hay un ganador claro");
         }
 
+        System.out.printf("%-34.34s %-25.25s%n", "Capacidades atacante y defensor: ", atacanteCapacidad + " vs " + defensorCapacidad);
+
+        atacante.getCampamento().vaciar(); // suponemos que se usan todas las tropas
+
         // calculando posibles recursos a robar
-        // TODO si mi aldea defiende no deberia quitar los recursos asi
-        int oro = defensor.getAlmacenOro().perder() + defensor.getMina().perder();
-        int elixir = defensor.getAlmacenElixir().perder() + defensor.getExtractor().perder();
+        int oroAlmacen = defensor.getAlmacenOro().getPosiblePerdida();
+        int oroMina = defensor.getMina().getPosiblePerdida();
+        int elixirAlmacen = defensor.getAlmacenElixir().getPosiblePerdida();
+        int elixirExtractor = defensor.getExtractor().getPosiblePerdida();
 
-        atacante.getCampamento().vaciar();
+        int oroTotal = oroAlmacen + oroMina;
+        int elixirTotal = elixirAlmacen + elixirExtractor;
 
-        // TODO ojo esto al imprimir solo es para cuando ataca
-        // esto se debe sacar de este metodo y ponerlo en cada metodo respectivo
-        System.out.println("Rival: " + defensorCapacidad + " vs Atacante: " + atacanteCapacidad);
-        if (victoria) {
-            // robar recursos
+        int oroRobado = 0;
+        int elixirRobado = 0;
+
+        // ojo yo lo estoy viendo desde el punto de vista del atacante
+        // pero deberia estar bien porque al final es lo mismo pero invirtiendo los papeles
+        // TODO ojo yo digo victoria y derrota, pero no se si es correcto
+        // porque si me atacan la victoria significa que yo pierdo
+        // y si yo ataco la victoria significa que el rival pierde
+        // entonces lo que creo que esta mal es el nombre de la variable
+        // y el mensaje que se imprime
+        System.out.println("Victoria: " + victoriaAtacante);
+        if (victoriaAtacante) {
             // al ganar se supondra que se roban todos los recursos
-            atacante.getAlmacenOro().almacenar(oro);
-            atacante.getAlmacenElixir().almacenar(elixir);
-
-            System.out.println("Victoria en el ataque");
-            System.out.printf("%-34.34s  %-25.25sn", "Oro total: " + oro, "Oro robado: " + oro);
-
-            System.out.println("Elixir robado: " + elixir);
-            System.out.println("Tropas restantes: " + atacante.getCampamento().getCantidadActualCampamento());
+            // los guardo para mostrar y luego calculo y guardo el robo
+            oroRobado = oroAlmacen + oroMina;
+            elixirRobado = elixirAlmacen + elixirExtractor;
+            defensor.getAlmacenElixir().perder();
+            defensor.getAlmacenOro().perder();
+            defensor.getMina().perder();
+            defensor.getExtractor().perder();
+            System.out.println("Gana el atacante");
         } else {
             // al perder se supone que a lo mucho se roba el 50% de los recursos
             // se calcula de 0 a 50% de los recursos
-            int oroRobado = oro * rand.nextInt(50) / 100;
-            int elixirRobado = elixir * rand.nextInt(50) / 100;
-            atacante.getAlmacenOro().almacenar(oroRobado);
-            atacante.getAlmacenElixir().almacenar(elixirRobado);
-
-
-            System.out.println("Derrota en el ataque");
-            System.out.println("Oro robado: " + oro);
-            System.out.println("Elixir robado: " + elixir);
-            System.out.println("Tropas restantes: " + atacante.getCampamento().getCantidadActualCampamento());
+            int porcentajeOro = rand.nextInt(50) / 100;
+            int porcentajeElixir = rand.nextInt(50) / 100;
+            oroRobado = oroAlmacen * porcentajeOro + oroMina * porcentajeOro;
+            elixirRobado = elixirAlmacen * porcentajeElixir + elixirExtractor * porcentajeElixir;
+            defensor.getExtractor().perder(elixirExtractor * porcentajeElixir);
+            defensor.getMina().perder(oroMina * porcentajeOro);
+            defensor.getAlmacenOro().perder(oroAlmacen * porcentajeOro);
+            defensor.getAlmacenElixir().perder(elixirAlmacen * porcentajeElixir);
+            System.out.println("Gana el defensor");
         }
+
+        // TODO no me cuadra, creo que no he calculado bien los recursos robados
+
+        atacante.getAlmacenOro().almacenar(oroRobado);
+        atacante.getAlmacenElixir().almacenar(elixirRobado);
+
+        System.out.printf("%-34.34s  %-25.25s%n", "Oro total: " + oroTotal, "Oro robado: " + oroRobado);
+        System.out.printf("%-34.34s  %-25.25s%n", "Elixir total: " + elixirTotal, "Elixir robado: " + elixirRobado);
     }
 
     public Almacen getAlmacenElixir() {
