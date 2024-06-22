@@ -53,7 +53,7 @@ public class Simulation {
         this.TIME_LIMIT = TIME_LIMIT;
         this.exp = new Exponential(seed, lambda);
         this.aldea = new Aldea();
-        this.random = new Random(seed);
+        this.random = new Random(seed + 2);
 
         // punteros a los edificios de la aldea
         this.mina = aldea.getMina();
