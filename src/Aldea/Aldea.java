@@ -103,6 +103,11 @@ public class Aldea {
 
         constructor.aumentarCola(1);
         edificio.setOcupado(true);
+
+        if (edificio.getTipoEdificio() == TipoEdificio.LABORATORIO) {
+            getLaboratorio().aumentarCola();
+        }
+
         return edificio;
     }
 
@@ -112,6 +117,10 @@ public class Aldea {
         }
         
         edificio.upgrade();
+        if (edificio.getTipoEdificio() == TipoEdificio.LABORATORIO) {
+            getLaboratorio().disminuirCola();
+            getCampamento().calcularAtaque(edificio.getNivel());
+        }
         getConstructor().disminuirCola();
         edificio.setOcupado(false);
     }

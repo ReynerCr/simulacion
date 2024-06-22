@@ -6,18 +6,19 @@ import Aldea.TipoEdificio;
 public class Laboratorio extends Edificio {
 
     private int capacidadMaxima;
-    private int cantidadTropas;
+    private int cola;
 
     public Laboratorio() {
         super(1, 5, 2, TipoEdificio.LABORATORIO, TipoEdificio.ALMACEN_ELIXIR);
         this.capacidadMaxima = 1;
-        this.cantidadTropas = 0;
+        this.cola = 0;
     }
 
-    public void ingresar() {
-        int entrada = this.cantidadTropas + 1;
+    // añade a la cola de mejora de la tropa
+    public void aumentarCola() {
+        int entrada = this.cola + 1;
         if (this.capacidadMaxima < entrada) {
-            this.cantidadTropas = entrada;
+            this.cola = entrada;
         }
     }
 
@@ -26,10 +27,10 @@ public class Laboratorio extends Edificio {
     }
 
     public boolean getDisponibilidad() {
-        return this.cantidadTropas < this.capacidadMaxima;
+        return this.cola < this.capacidadMaxima;
     }
 
-    public void eliminar() {
-        this.cantidadTropas -= 1;
+    public void disminuirCola() {
+        this.cola -= 1;
     }
 }

@@ -22,16 +22,14 @@ public class App {
             System.out.println("'m' -> mejorar mina");
             System.out.println("'x' -> mejorar almacen de oro");
             System.out.println("'z' -> para mejorar almacen de elixir");
-            System.out.println("'p' -> volver al menú principal");
-
-            System.out.println("'c' -> mejorar el cuartel");
             System.out.println("'l' -> mejorar tropa en el laboratorio");
-
-
+            System.out.println("'c' -> mejorar el cuartel");
+            System.out.println("'v' -> mejorar campamento");
             System.out.println("'b' -> mejorar constructor");
-
             System.out.println("'d' -> mejorar defensas");
             System.out.println("'a' -> atacar a otra aldea");
+            System.out.println("'5' -> defender de otra aldea (ELIMINAR)");
+            System.out.println("'p' -> volver al menú principal");
 
             try {
                 resp = scanner.next().charAt(0);
@@ -46,9 +44,6 @@ public class App {
                 case 'r':
                     System.out.println("Recolectando recursos...");
                     sim.aldeaRecolectar();
-                    break;
-                case 'c':
-                    System.out.println("Construyendo edificaciones...");
                     break;
                 case 'e':
                     System.out.println("Mejorando extractor...");
@@ -73,6 +68,31 @@ public class App {
                 case 'a':
                     System.out.println("Atacando a otra aldea...");
                     sim.aldeaAtacar();
+                    break;
+                case 'l':
+                    System.out.println("Mejorando tropa en el laboratorio...");
+                    sim.aldeaUpgradeEdificio(TipoEdificio.LABORATORIO);
+                    break;
+                case 'c':
+                    System.out.println("Mejorando cuartel...");
+                    sim.aldeaUpgradeEdificio(TipoEdificio.CUARTEL);
+                    break;
+                    case 'v':
+                    System.out.println("Mejorando campamento...");
+                    sim.aldeaUpgradeEdificio(TipoEdificio.CAMPAMENTO);
+                    break;
+                case '5':
+                    // TODO eliminar cuando ya haya aleatoriedad
+                    System.out.println("Defendiendo de otra aldea...");
+                    sim.aldeaDefender();
+                    break;
+                case 'b':
+                    System.out.println("Mejorando constructor...");
+                    sim.aldeaUpgradeEdificio(TipoEdificio.CONSTRUCTOR);
+                    break;
+                case 'd':
+                    System.out.println("Mejorando defensas...");
+                    sim.aldeaUpgradeEdificio(TipoEdificio.DEFENSA);
                     break;
                 case 'p':
                     System.out.println("Volviendo al menú principal...");
@@ -120,7 +140,7 @@ public class App {
 
             // Instrucciones para el usuario
             if (response != 'o') {
-                System.out.println("'x' -> avance automático");
+                System.out.println("'o' -> avance automático");
                 System.out.println("'n' -> avanzar al siguiente evento");
                 System.out.println("'j' -> avanzar un segundo");
                 System.out.println("'a' -> acceder al menú de la aldea");

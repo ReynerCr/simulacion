@@ -74,6 +74,7 @@ public class Simulation {
         cuartel.aumentarCola(1);
         Event e = new Event(time, 2, "Entrenar tropa", (event) -> {
             campamento.agregar(cuartel);
+            campamento.calcularAtaque(laboratorio.getNivel());
         });
         addEvent(e);
     }
@@ -86,15 +87,30 @@ public class Simulation {
         addEvent(e);
     }
 
+    public void aldeaDefender() {
+        // TODO falta defender
+        Event e = new Event(time, 5, "Defender", (event) -> {
+            //aldea.defender();
+        });
+        addEvent(e);
+    }
+
+     /*
+        * Construcción o mejora de edificio
+        * Si el nivel del edificio es 0, se construye
+        * En caso contrario, se mejora
+     */
     public void aldeaUpgradeEdificio(TipoEdificio tipo) {
         Edificio edificio = aldea.upgradeEdificio(tipo);
         if (edificio == null) {
             return;
         }
 
-        Event e = new Event(time, 5, "Finalización de mejora de edificio", (event) -> {
-            aldea.terminarConstruccion(edificio);
-        });
+        Event e = new Event(time, 5, "Finalización de " + 
+                (edificio.getNivel() == 0 ? "construcción" : "mejora") + " de edificio",
+                (event) -> {
+                    aldea.terminarConstruccion(edificio);
+                });
         addEvent(e);
     }
 
@@ -129,7 +145,7 @@ public class Simulation {
                 + "    nivel de tropas: " + laboratorio.getNivel());
 
         // tropas
-        System.out.println("Cuartel entrenamiento: " + cuartel.getColaEntrenamiento() + "    capacidad: " + cuartel.getCapacidadMaxima());
+        System.out.println("Cuartel entrenamiento cola:" + cuartel.getColaEntrenamiento() + "    capacidad: " + cuartel.getCapacidadMaxima());
         System.out.println("Cantidad de tropas en campamento: " + campamento.getCantidadActualCampamento() + "    capacidad: " + campamento.getCapacidadMaxima() + "    capacidad de ataque: " + campamento.getCapacidadAtaque());
 
         // numero de constructores disponibles

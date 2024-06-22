@@ -10,7 +10,7 @@ public class Cuartel extends Edificio {
 
     public Cuartel() {
         super(1, 5, 2, TipoEdificio.CUARTEL, TipoEdificio.ALMACEN_ELIXIR);
-        this.capacidadMaxima = 3;
+        this.capacidadMaxima = 10 * nivel;
         this.colaEntrenamiento = 0;
     }
 
@@ -25,7 +25,6 @@ public class Cuartel extends Edificio {
         }
     }
 
-    // TODO cuidado con la cantidad de tropas
     public void disminuirCola(int cantidad) {
         if (cantidad < this.colaEntrenamiento) {
             this.colaEntrenamiento = this.colaEntrenamiento - cantidad;
@@ -36,7 +35,7 @@ public class Cuartel extends Edificio {
 
     public void upgrade() {
         upgradeEdificio();
-        this.capacidadMaxima += 1;
+        this.capacidadMaxima += this.nivel * 5 + 10;
     }
 
     public int getColaEntrenamiento() {
