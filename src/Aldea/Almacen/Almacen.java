@@ -13,12 +13,12 @@ public class Almacen extends Edificio {
                 (tipoEdificio == TipoEdificio.ALMACEN_ORO) ? TipoEdificio.ALMACEN_ELIXIR : TipoEdificio.ALMACEN_ORO);
         this.max = 100;
         this.acumulado = 0;
-        this.tasaPerdida = 5;
+        this.tasaPerdida = 10;
     }
 
     public int getPosiblePerdida() {
-        int perdida = this.max * this.tasaPerdida / 100;
-        if (perdida == 0) { // no se puede perder menos de 1
+        int perdida = this.acumulado * this.tasaPerdida / 100;
+        if (perdida == 0 && this.acumulado > 0) { // no se puede perder menos de 1
             perdida = 1;
         }
         return perdida;

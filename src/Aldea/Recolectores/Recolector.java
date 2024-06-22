@@ -15,7 +15,7 @@ public class Recolector extends Edificio {
         this.tasaProduccion = tasaProduccion;
         this.capacidadMaxima = 80;
         this.acumulado = 0;
-        this.tasaPerdida = 1;
+        this.tasaPerdida = 10;
     }
 
     public void producir() {
@@ -26,8 +26,8 @@ public class Recolector extends Edificio {
     }
 
     public int getPosiblePerdida() {
-        int perdida = this.capacidadMaxima * this.tasaPerdida / 100;
-        if (perdida == 0) { // no se puede perder menos de 1
+        int perdida = this.acumulado * this.tasaPerdida / 100;
+        if (perdida == 0 && this.acumulado > 0) {
             perdida = 1;
         }
         return perdida;
