@@ -10,7 +10,7 @@ public class Constructor extends Edificio {
 
     public Constructor(){
         // TODO el nivel del constructor deberia ser 1, ajustar al final
-        super(3, 5, 2, TipoEdificio.CONSTRUCTOR, TipoEdificio.ALMACEN_ORO);
+        super(3, 100, 5, TipoEdificio.CONSTRUCTOR, TipoEdificio.ALMACEN_ORO);
         this.capacidadMaxima= 1 * nivel;
         this.colaConstruccion = 0;
     }

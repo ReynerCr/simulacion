@@ -9,7 +9,7 @@ public class Cuartel extends Edificio {
     private int colaEntrenamiento;
 
     public Cuartel() {
-        super(1, 5, 2, TipoEdificio.CUARTEL, TipoEdificio.ALMACEN_ELIXIR);
+        super(1, 50, 5, TipoEdificio.CUARTEL, TipoEdificio.ALMACEN_ELIXIR);
         this.capacidadMaxima = 10 * nivel;
         this.colaEntrenamiento = 0;
     }

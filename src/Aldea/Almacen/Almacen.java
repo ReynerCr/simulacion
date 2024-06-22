@@ -9,17 +9,31 @@ public class Almacen extends Edificio {
     private int tasaPerdida;
 
     public Almacen(TipoEdificio tipoEdificio) {
-        super(1, 5, 2, tipoEdificio,
+        super(1, 50, 2, tipoEdificio,
                 (tipoEdificio == TipoEdificio.ALMACEN_ORO) ? TipoEdificio.ALMACEN_ELIXIR : TipoEdificio.ALMACEN_ORO);
-        this.max = 10;
+        this.max = 100;
         this.acumulado = 0;
-        this.tasaPerdida = 1;
+        this.tasaPerdida = 5;
     }
 
-    public int perder() {
+    public int getPosiblePerdida() {
         int perdida = this.max * this.tasaPerdida / 100;
-        this.acumulado = this.acumulado - perdida;
+        if (perdida == 0) { // no se puede perder menos de 1
+            perdida = 1;
+        }
         return perdida;
+    }
+
+    public void perder() {
+        int perdida = getPosiblePerdida();
+        this.acumulado = this.acumulado - perdida;
+    }
+
+    public void perder(int cantidad) {
+        if (cantidad > this.acumulado) {
+            cantidad = this.acumulado;
+        }
+        this.acumulado = this.acumulado - cantidad;
     }
 
     public void almacenar(int cantidad) {
@@ -34,8 +48,8 @@ public class Almacen extends Edificio {
 
     public void upgrade() {
         upgradeEdificio();
-        this.max = this.max + (this.nivel * 5);
-        this.tasaPerdida = tasaPerdida + 1;
+        this.max = this.max + (this.nivel * 60);
+        this.tasaPerdida = tasaPerdida + 2;
     }
 
     public boolean consumir(int cantidad) {

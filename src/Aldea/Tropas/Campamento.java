@@ -7,35 +7,32 @@ public class Campamento extends Edificio {
     private int capacidadMaxima;
     private int cantidadActualCampamento;
     private int capacidadAtaque;
+    private int ataqueTropa;
 
     public Campamento() {
-        super(1, 5, 2, TipoEdificio.CAMPAMENTO, TipoEdificio.ALMACEN_ELIXIR);
+        super(1, 50, 5, TipoEdificio.CAMPAMENTO, TipoEdificio.ALMACEN_ELIXIR);
         this.capacidadMaxima = 10 * nivel;
         this.cantidadActualCampamento = 0;
-        this.capacidadAtaque = 1 * cantidadActualCampamento;
+        this.ataqueTropa = 10;
+        this.capacidadAtaque = this.ataqueTropa * this.cantidadActualCampamento;
     }
 
-    // TODO cuidado con la cantidad de tropas
     public void agregar(Cuartel cuartel) {
         int entrada = cantidadActualCampamento + 1;
 
-        if (capacidadMaxima > entrada) {
+        if (capacidadMaxima >= entrada) {
             this.cantidadActualCampamento = entrada;
             cuartel.disminuirCola(1);
         }
     }
 
     public void calcularAtaque(int nivelLaboratorio) {
-        this.capacidadAtaque = nivelLaboratorio * cantidadActualCampamento;
+        this.capacidadAtaque = (nivelLaboratorio * 5 + ataqueTropa)  * cantidadActualCampamento;
     }
 
     public void upgrade() {
         upgradeEdificio();
-        this.capacidadMaxima += this.nivel * 5;
-    }
-
-    public void aumentarAtaque() {
-        this.capacidadAtaque += 1;
+        this.capacidadMaxima += 10 + this.nivel * 5;
     }
 
     public void vaciar() {

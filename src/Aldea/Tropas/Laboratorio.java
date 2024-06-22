@@ -9,7 +9,7 @@ public class Laboratorio extends Edificio {
     private int cola;
 
     public Laboratorio() {
-        super(1, 5, 2, TipoEdificio.LABORATORIO, TipoEdificio.ALMACEN_ELIXIR);
+        super(1, 70, 6, TipoEdificio.LABORATORIO, TipoEdificio.ALMACEN_ELIXIR);
         this.capacidadMaxima = 1;
         this.cola = 0;
     }

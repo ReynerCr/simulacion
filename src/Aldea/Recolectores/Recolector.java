@@ -10,10 +10,10 @@ public class Recolector extends Edificio {
     private int tasaPerdida;
 
     public Recolector(int tasaProduccion, TipoEdificio tipoEdificio) {
-        super(1, 5, 2, tipoEdificio,
+        super(1, 40, 2, tipoEdificio,
                 (tipoEdificio == TipoEdificio.EXTRACTOR) ? TipoEdificio.ALMACEN_ORO : TipoEdificio.ALMACEN_ELIXIR);
         this.tasaProduccion = tasaProduccion;
-        this.capacidadMaxima = 10;
+        this.capacidadMaxima = 80;
         this.acumulado = 0;
         this.tasaPerdida = 1;
     }
@@ -25,17 +25,31 @@ public class Recolector extends Edificio {
         }
     }
 
-    public int perder() {
+    public int getPosiblePerdida() {
         int perdida = this.capacidadMaxima * this.tasaPerdida / 100;
-        this.acumulado = this.acumulado - perdida;
+        if (perdida == 0) { // no se puede perder menos de 1
+            perdida = 1;
+        }
         return perdida;
+    }
+
+    public void perder() {
+        int perdida = getPosiblePerdida();
+        this.acumulado = this.acumulado - perdida;
+    }
+
+    public void perder(int cantidad) {
+        if (cantidad > this.acumulado) {
+            cantidad = this.acumulado;
+        }
+        this.acumulado = this.acumulado - cantidad;
     }
 
     public void upgrade() {
         upgradeEdificio();
-        this.tasaProduccion = this.tasaProduccion + (this.nivel * 2);
-        this.capacidadMaxima = this.capacidadMaxima + (this.nivel * 5);
-        this.tasaPerdida = this.tasaPerdida + this.tasaPerdida * 2;
+        this.tasaProduccion = this.tasaProduccion + (this.nivel * 10);
+        this.capacidadMaxima = this.capacidadMaxima + (this.nivel * 40);
+        this.tasaPerdida = tasaPerdida + 1;
     }
 
     public void vaciar() {
