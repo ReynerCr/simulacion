@@ -1,3 +1,4 @@
+
 package Aldea.Recolectores;
 
 import Aldea.Edificio;
@@ -15,7 +16,7 @@ public class Recolector extends Edificio {
         this.tasaProduccion = tasaProduccion;
         this.capacidadMaxima = 80;
         this.acumulado = 0;
-        this.tasaPerdida = 10;
+        this.tasaPerdida = 15;
     }
 
     public void producir() {
@@ -49,7 +50,7 @@ public class Recolector extends Edificio {
         upgradeEdificio();
         this.tasaProduccion = this.tasaProduccion + (this.nivel * 10);
         this.capacidadMaxima = this.capacidadMaxima + (this.nivel * 40);
-        this.tasaPerdida = tasaPerdida + 1;
+        this.tasaPerdida = tasaPerdida + 2;
     }
 
     public void vaciar() {

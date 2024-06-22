@@ -13,11 +13,7 @@ public class Defensa extends Edificio {
 
     public void upgrade(){
         upgradeEdificio();
-        this.capacidadDefensa = this.nivel * 70;
-    }
-
-    public void aumentar(){
-        this.capacidadDefensa +=1;
+        this.capacidadDefensa = 150 + this.nivel * 50;
     }
 
     public void setCapacidadDefensa(int capacidadDefensa){
