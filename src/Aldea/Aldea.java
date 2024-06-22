@@ -178,8 +178,8 @@ public class Aldea {
         extractorR.setAcumulado(extractorR.getCapacidadMaxima() * rand.nextInt(100) / 100);
 
         // ahora seteo la cantidad de tropas en el campamento
-        // cantidad de tropas entre 50 y 100% de la capacidad máxima
-        int cantidadTropas = campamentoR.getCapacidadMaxima() * (rand.nextInt(50) + 50) / 100;
+        // cantidad de tropas entre 85% y 100% de la capacidad máxima
+        int cantidadTropas = campamentoR.getCapacidadMaxima() * (rand.nextInt(20) + 85) / 100;
         campamentoR.setCantidadActualCampamento(cantidadTropas);
         campamentoR.calcularAtaque(laboratorioR.getNivel());
 

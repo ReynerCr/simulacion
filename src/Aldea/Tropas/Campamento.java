@@ -55,8 +55,12 @@ public class Campamento extends Edificio {
         return this.capacidadMaxima;
     }
 
-    public int setCantidadActualCampamento(int cantidadActualCampamento) {
-        return this.cantidadActualCampamento;
+    public boolean setCantidadActualCampamento(int cantidadActualCampamento) {
+        if (cantidadActualCampamento > this.capacidadMaxima) {
+            return false;
+        }
+        this.cantidadActualCampamento = cantidadActualCampamento;
+        return true;
     }
 
     public int setNivelAtaque() {
