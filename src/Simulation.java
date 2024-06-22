@@ -15,8 +15,7 @@ import Aldea.Defensas.Defensa;
 
 // Clase comparadora para ordenar eventos por tiempo de ocurrencia
 class SortByTimeToHappen implements Comparator<Event> {
-    public int compare(Event a, Event b)
-    {
+    public int compare(Event a, Event b) {
         return a.timeToHappen - b.timeToHappen;
     }
 }
@@ -30,7 +29,8 @@ public class Simulation {
     private int time = 0;
     private int TIME_LIMIT = 15;
 
-    // TODO cambiar el lambda a uno con sentido y luego comprobar si los numeros generados son exponenciales
+    // TODO cambiar el lambda a uno con sentido y luego comprobar si los numeros
+    // generados son exponenciales
     private Exponential exp;
     private Aldea aldea;
 
@@ -82,7 +82,7 @@ public class Simulation {
     public void aldeaAtacar() {
         // TODO falta atacar
         Event e = new Event(time, 5, "Atacar", (event) -> {
-            //aldea.atacar();
+            // aldea.atacar();
         });
         addEvent(e);
     }
@@ -90,15 +90,15 @@ public class Simulation {
     public void aldeaDefender() {
         // TODO falta defender
         Event e = new Event(time, 5, "Defender", (event) -> {
-            //aldea.defender();
+            // aldea.defender();
         });
         addEvent(e);
     }
 
-     /*
-        * Construcción o mejora de edificio
-        * Si el nivel del edificio es 0, se construye
-        * En caso contrario, se mejora
+    /*
+     * Construcción o mejora de edificio
+     * Si el nivel del edificio es 0, se construye
+     * En caso contrario, se mejora
      */
     public void aldeaUpgradeEdificio(TipoEdificio tipo) {
         Edificio edificio = aldea.upgradeEdificio(tipo);
@@ -106,7 +106,7 @@ public class Simulation {
             return;
         }
 
-        Event e = new Event(time, 5, "Finalización de " + 
+        Event e = new Event(time, 5, "Finalización de " +
                 (edificio.getNivel() == 0 ? "construcción" : "mejora") + " de edificio",
                 (event) -> {
                     aldea.terminarConstruccion(edificio);
@@ -123,36 +123,40 @@ public class Simulation {
 
     public void printStatus() {
         System.out.println("Tiempo: " + time);
-        
         Event futuro = this.peekEvent();
         if (futuro != null) {
             futuro.print();
         } else {
             System.out.println("No hay eventos futuros");
         }
-
-        // recolectores
-        System.out.println("Mina: " + mina.getAcumulado() + "   Tasa de produccion: " + mina.getTasa() + "    nivel: " + mina.getNivel());
-        System.out.println("Extractor: " + extractor.getAcumulado() + "    Tasa de produccion: " + extractor.getTasa() + "    nivel: " + extractor.getNivel());
         
+        // recolectores
+        System.out.printf("%-34.34s  %-25.25s %-30.30s%n", "Mina: oro " + mina.getAcumulado(),
+                "Tasa de produccion: " + mina.getTasa(), "nivel: " + mina.getNivel());
+        System.out.printf("%-34.34s  %-25.25s %-30.30s%n", "Extractor: " + extractor.getAcumulado(),
+                "Tasa de produccion: " + extractor.getTasa(), "nivel: " + extractor.getNivel());
         // almacenes
-        System.out.println("Oro: " + almacenOro.getAcumulado() + "   " + "  nivel: " + almacenOro.getNivel());
-        System.out.println("Elixir: " + almacenElixir.getAcumulado() + "     " + "nivel: " + almacenElixir.getNivel());
- 
+        System.out.printf("%-34.34s  %-30.30s%n", "Almacen oro: almacenado " + almacenOro.getAcumulado(),
+                "nivel: " + almacenOro.getNivel());
+        System.out.printf("%-34.34s  %-30.30s%n", "Almacen elixir: almacenado " + almacenElixir.getAcumulado(),
+                "nivel: " + almacenElixir.getNivel());
         // laboratorio
-        System.out.println("Laboratorio: " + (
-            laboratorio.getDisponibilidad() == true ? "disponible" : "ocupado")
-                + "    nivel de tropas: " + laboratorio.getNivel());
-
+        System.out.printf("%-34.34s  %-30.30s%n",
+                "Laboratorio: " + (laboratorio.getDisponibilidad() == true ? "disponible" : "ocupado"),
+                "nivel de tropas: " + laboratorio.getNivel());
         // tropas
-        System.out.println("Cuartel entrenamiento cola:" + cuartel.getColaEntrenamiento() + "    capacidad: " + cuartel.getCapacidadMaxima());
-        System.out.println("Cantidad de tropas en campamento: " + campamento.getCantidadActualCampamento() + "    capacidad: " + campamento.getCapacidadMaxima() + "    capacidad de ataque: " + campamento.getCapacidadAtaque());
-
+        System.out.printf("%-34.34s  %-30.30s%n", "Cuartel entrenamiento cola:" + cuartel.getColaEntrenamiento(),
+                "capacidad: " + cuartel.getCapacidadMaxima());
+        System.out.printf("%-34.34s  %-25.25s %-30.30s%n",
+                "Cantidad de tropas en campamento: " + campamento.getCantidadActualCampamento(),
+                "capacidad: " + campamento.getCapacidadMaxima(),
+                "capacidad de ataque: " + campamento.getCapacidadAtaque());
         // numero de constructores disponibles
-        System.out.println("Constructores disponibles: " + constructor.getDisponibilidad() + "   /   total: " + constructor.getCapacidad());
-
+        System.out.printf("%-34.34s  %-30.30s%n", "Constructores disponibles: " + constructor.getDisponibilidad(),
+                "total: " + constructor.getCapacidad());
         // defensas
-        System.out.println("Defensas: nivel " + defensa.getNivel() + "    capacidad de defensa: " + defensa.getCapacidadDefensa());
+        System.out.printf("%-34.34s  %-30.30s%n", "Defensas: nivel " + defensa.getNivel(),
+                "capacidad de defensa: " + defensa.getCapacidadDefensa());
     }
 
     public void skipToNextEvent() {
@@ -202,8 +206,8 @@ public class Simulation {
     }
 
     // revisar si hay eventos que deben ocurrir en este instante
-    public ArrayList<Event>runEvents() {
-        ArrayList <Event> events = new ArrayList<Event>();
+    public ArrayList<Event> runEvents() {
+        ArrayList<Event> events = new ArrayList<Event>();
         while (!futureEvents.isEmpty() && futureEvents.peek().getTimeToHappen() == time) {
             Event event = futureEvents.poll();
             events.add(event);

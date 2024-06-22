@@ -5,7 +5,10 @@ import Aldea.TipoEdificio;
 public class App {
     private static Scanner scanner = new Scanner(System.in);
 
+    // Nota: no funciona en todos los sistemas operativos
+    // ni en todos los terminales
     public static void clearConsole() {
+        System.out.print("\n\n");
         System.out.println("\033[H\033[2J");
     }
 
@@ -14,23 +17,23 @@ public class App {
 
         char resp = ' ';
         
-        while (resp != 'p') { // previous
+        while (resp != 'p') {
             sim.printStatus();
-            System.out.println("'r' -> recolectar recursos");
-            System.out.println("'t' -> entrenar una tropa");
-            System.out.println("'e' -> mejorar extractor");
-            System.out.println("'m' -> mejorar mina");
-            System.out.println("'x' -> mejorar almacen de oro");
-            System.out.println("'z' -> para mejorar almacen de elixir");
-            System.out.println("'l' -> mejorar tropa en el laboratorio");
-            System.out.println("'c' -> mejorar el cuartel");
-            System.out.println("'v' -> mejorar campamento");
-            System.out.println("'b' -> mejorar constructor");
-            System.out.println("'d' -> mejorar defensas");
-            System.out.println("'a' -> atacar a otra aldea");
+
+            System.out.println("---------------------- Menú de la aldea ----------------------");
+            System.out.printf("%-34.34s  %-34.34s%n","'r' -> recolectar recursos","'t' -> entrenar una tropa");
+            System.out.printf("%-34.34s  %-34.34s%n","'e' -> mejorar extractor","'m' -> mejorar mina");
+            System.out.printf("%-34.34s  %-34.34s%n","'x' -> mejorar almacen oro","'z' -> mejorar almacen elixir");
+
+
+            System.out.printf("%-34.34s  %-34.34s%n","'l' -> mejorar tropa laboratorio","'c' -> mejorar el cuartel");
+            System.out.printf("%-34.34s  %-34.34s%n","'v' -> mejorar campamento","'b' -> mejorar constructor");
+
+            System.out.printf("%-34.34s  %-34.34s%n","'d' -> mejorar defensas","'a' -> atacar a otra aldea");
+
             System.out.println("'5' -> defender de otra aldea (ELIMINAR)");
             System.out.println("'p' -> volver al menú principal");
-
+            
             try {
                 resp = scanner.next().charAt(0);
             } catch (Exception e) {
@@ -140,10 +143,11 @@ public class App {
 
             // Instrucciones para el usuario
             if (response != 'o') {
-                System.out.println("'o' -> avance automático");
-                System.out.println("'n' -> avanzar al siguiente evento");
+                System.out.println("------------------------ Menú general ------------------------");
                 System.out.println("'j' -> avanzar un segundo");
+                System.out.println("'n' -> avanzar al siguiente evento");
                 System.out.println("'a' -> acceder al menú de la aldea");
+                System.out.println("'o' -> avance automático");
                 System.out.println("'q' -> salir de la simulación");
             }   
             try {
