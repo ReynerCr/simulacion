@@ -128,29 +128,25 @@ public class Aldea {
 
     private Aldea crearAldeaRandom(Random rand) {
         Aldea rival = new Aldea();
-
-        int nivelDefensa = getCampamento().getNivel() + rand.nextInt(2) - 1;
+        int nivelDefensa = getCampamento().getNivel() + rand.nextInt(2);
         // upgrade a defensas hasta que tenga el nivel de defensa calculado
         while (rival.getDefensa().getNivel() < nivelDefensa) {
             rival.getDefensa().upgrade();
         }
 
         // ahora calculo el promedio de los niveles de los almacenes y recolectores
-        int nivelAlmacenesPromedio = (int) (getAlmacenElixir().getNivel() + getAlmacenOro().getNivel()) / 2;
-        int nivelRecolectoresPromedio = (int) (getExtractor().getNivel() + getMina().getNivel()) / 2;
-        int nivelPromedio = (int) (nivelAlmacenesPromedio + nivelRecolectoresPromedio) / 2;
-
+        int nivelAlmacenesPromedio = ((getAlmacenElixir().getNivel() + getAlmacenOro().getNivel()) / 2);
+        int nivelRecolectoresPromedio = ((getExtractor().getNivel() + getMina().getNivel()) / 2);
         Almacen almaElixR = rival.getAlmacenElixir();
         Almacen almaOroR = rival.getAlmacenOro();
         Recolector minaR = rival.getMina();
         Recolector extractorR = rival.getExtractor();
-
         // upgrade a almacenes y recolectores hasta que tengan el nivel promedio
-        while (almaElixR.getNivel() < nivelPromedio) {
+        while (almaElixR.getNivel() < nivelAlmacenesPromedio) {
             almaElixR.upgrade();
             almaOroR.upgrade();
         }
-        while (extractorR.getNivel() < nivelPromedio) {
+        while (extractorR.getNivel() < nivelRecolectoresPromedio) {
             minaR.upgrade();
             extractorR.upgrade();
         }
@@ -159,29 +155,31 @@ public class Aldea {
         Campamento campamentoR = rival.getCampamento();
         Laboratorio laboratorioR = rival.getLaboratorio();
         // calculo el promedio de los niveles de campamento y laboratorio de mi aldea
-        int nivelCampamentoR = getCampamento().getNivel() + rand.nextInt(2) - 1;
-        int nivelLaboratorioR = getCampamento().getNivel() + rand.nextInt(3) - 2;
+        int nivelCampamentoR = getCampamento().getNivel() + rand.nextInt(2);
+        int nivelLaboratorioR = getLaboratorio().getNivel() + rand.nextInt(2);
 
         // upgrade a campamento y laboratorio rivales hasta que tengan el nivel promedio
         while (campamentoR.getNivel() < nivelCampamentoR) {
             campamentoR.upgrade();
         }
         while (laboratorioR.getNivel() < nivelLaboratorioR) {
-            campamentoR.upgrade();
+            laboratorioR.upgrade();
         }
 
         // ahora si un random de 0 a 100 de cuánto tiene cada almacen y recolector
-        // set los valores de los almacenes y recolectores
-        almaOroR.setAcumulado(almaOroR.getMax() * rand.nextInt(100) / 100);
-        almaElixR.setAcumulado(almaElixR.getMax() * rand.nextInt(100) / 100);
-        minaR.setAcumulado(minaR.getCapacidadMaxima() * rand.nextInt(100) / 100);
-        extractorR.setAcumulado(extractorR.getCapacidadMaxima() * rand.nextInt(100) / 100);
+        almaOroR.setAcumulado(almaOroR.getMax() * (rand.nextInt(95) + 5) / 100);
+        almaElixR.setAcumulado(almaElixR.getMax() * (rand.nextInt(95) + 5) / 100);
+        minaR.setAcumulado(minaR.getCapacidadMaxima() * (rand.nextInt(95) +5) / 100);
+        extractorR.setAcumulado(extractorR.getCapacidadMaxima() * (rand.nextInt(95) + 5) / 100);
 
         // ahora seteo la cantidad de tropas en el campamento
         // cantidad de tropas entre 85% y 100% de la capacidad máxima
         int cantidadTropas = campamentoR.getCapacidadMaxima() * (rand.nextInt(20) + 85) / 100;
         campamentoR.setCantidadActualCampamento(cantidadTropas);
         campamentoR.calcularAtaque(laboratorioR.getNivel());
+
+        /* System.out.println("Cantidad de tropas y capacidad ataque: " + cantidadTropas + " " + " " + campamentoR.getCapacidadMaxima() + " " + campamentoR.getCapacidadAtaque());
+        System.out.println("Niveles de aldea rival laborat y campamento: " + nivelCampamentoR + " " + nivelLaboratorioR); */
 
         return rival;
     }
@@ -213,10 +211,8 @@ public class Aldea {
         boolean victoriaAtacante;
         if (atacanteCapacidad == defensorCapacidad) {
             victoriaAtacante = rand.nextBoolean(); // 50% de probabilidad
-            System.out.println("Empate entonces probabilidad 50%");
         } else {
             victoriaAtacante = atacanteCapacidad > defensorCapacidad;
-            System.out.println("Hay un ganador claro");
         }
 
         System.out.printf("%-34.34s %-25.25s%n", "Capacidades atacante y defensor: ", atacanteCapacidad + " vs " + defensorCapacidad);
@@ -235,14 +231,6 @@ public class Aldea {
         int oroRobado = 0;
         int elixirRobado = 0;
 
-        // ojo yo lo estoy viendo desde el punto de vista del atacante
-        // pero deberia estar bien porque al final es lo mismo pero invirtiendo los papeles
-        // TODO ojo yo digo victoria y derrota, pero no se si es correcto
-        // porque si me atacan la victoria significa que yo pierdo
-        // y si yo ataco la victoria significa que el rival pierde
-        // entonces lo que creo que esta mal es el nombre de la variable
-        // y el mensaje que se imprime
-        System.out.println("Victoria: " + victoriaAtacante);
         if (victoriaAtacante) {
             // al ganar se supondra que se roban todos los recursos
             // los guardo para mostrar y luego calculo y guardo el robo
