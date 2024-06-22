@@ -7,8 +7,8 @@ public class Defensa extends Edificio {
     private int capacidadDefensa;
 
     public Defensa() {
-        super(1, 30, 5, TipoEdificio.DEFENSA, TipoEdificio.ALMACEN_ORO);
-        this.capacidadDefensa = 150 * nivel;
+        super(0, 30, 5, TipoEdificio.DEFENSA, TipoEdificio.ALMACEN_ORO);
+        this.capacidadDefensa = 150;
     }
 
     public void upgrade(){

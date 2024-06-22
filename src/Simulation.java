@@ -113,11 +113,16 @@ public class Simulation {
             return;
         }
 
-        Event e = new Event(time, 5, "Finalización de " +
-                (edificio.getNivel() == 0 ? "construcción" : "mejora") + " de edificio",
-                (event) -> {
-                    aldea.terminarConstruccion(edificio);
-                });
+        Event e;
+        if (edificio.getNivel() == 0) {
+            e = new Event(time, 5, "Construcción de edificio", (event) -> {
+                aldea.finConstruccionEdificio(edificio);
+            });
+        } else {
+            e = new Event(time, 5, "Finalización de mejora de edificio", (event) -> {
+                aldea.finMejoraEdificio(edificio);
+            });
+        }
         addEvent(e);
     }
 
@@ -147,24 +152,35 @@ public class Simulation {
                 "nivel " + almacenOro.getNivel());
         System.out.printf("%-34.34s  %-30.30s%n", "Almacen elixir: almacenado " + almacenElixir.getAcumulado(),
                 "nivel " + almacenElixir.getNivel());
-        // laboratorio
-        System.out.printf("%-34.34s  %-30.30s%n",
-                "Laboratorio: " + (laboratorio.getDisponibilidad() == true ? "disponible" : "ocupado"),
-                "nivel de tropas " + laboratorio.getNivel());
-        // tropas
-        System.out.printf("%-34.34s  %-25.25s %-30.30s%n",
-                "Cuartel entrenamiento: cola " + cuartel.getColaEntrenamiento(),
-                "capacidad " + cuartel.getCapacidadMaxima(), "tropas entrenadas " + cuartel.getTropasEntrenadas());
-        System.out.printf("%-34.34s  %-25.25s %-30.30s%n",
-                "Campamento: cantidad " + campamento.getCantidadActualCampamento(),
-                "capacidad " + campamento.getCapacidadMaxima(),
-                "capacidad de ataque " + campamento.getCapacidadAtaque());
+
         // numero de constructores disponibles
         System.out.printf("%-34.34s  %-30.30s%n", "Constructores: disponibles " + constructor.getDisponibilidad(),
                 "total " + constructor.getCapacidad());
-        // defensas
-        System.out.printf("%-34.34s  %-30.30s%n", "Defensas: nivel " + defensa.getNivel(),
-                "capacidad de defensa " + defensa.getCapacidadDefensa());
+
+        if (laboratorio.getNivel() > 0) {
+            // laboratorio
+            System.out.printf("%-34.34s  %-30.30s%n",
+                    "Laboratorio: " + (laboratorio.getDisponibilidad() == true ? "disponible" : "ocupado"),
+                    "nivel de tropas " + laboratorio.getNivel());
+        }
+        if (cuartel.getNivel() > 0) {
+            // tropas
+            System.out.printf("%-34.34s  %-25.25s %-30.30s%n",
+                    "Cuartel entrenamiento: cola " + cuartel.getColaEntrenamiento(),
+                    "capacidad " + cuartel.getCapacidadMaxima(), "tropas entrenadas " + cuartel.getTropasEntrenadas());
+        }
+        if (campamento.getNivel() > 0) {
+            // campamento
+            System.out.printf("%-34.34s  %-25.25s %-30.30s%n",
+                    "Campamento: cantidad " + campamento.getCantidadActualCampamento(),
+                    "capacidad " + campamento.getCapacidadMaxima(),
+                    "capacidad de ataque " + campamento.getCapacidadAtaque());
+        }
+        if (defensa.getNivel() > 0) {
+            // defensas
+            System.out.printf("%-34.34s  %-30.30s%n", "Defensas: nivel " + defensa.getNivel(),
+                    "capacidad de defensa " + defensa.getCapacidadDefensa());
+        }
     }
 
     public void skipToNextEvent() {

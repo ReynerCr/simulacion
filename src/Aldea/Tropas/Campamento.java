@@ -10,7 +10,7 @@ public class Campamento extends Edificio {
     private int ataqueTropa;
 
     public Campamento() {
-        super(1, 50, 5, TipoEdificio.CAMPAMENTO, TipoEdificio.ALMACEN_ELIXIR);
+        super(0, 50, 5, TipoEdificio.CAMPAMENTO, TipoEdificio.ALMACEN_ELIXIR);
         this.capacidadMaxima = 10;
         this.cantidadActualCampamento = 0;
         this.ataqueTropa = 15;
