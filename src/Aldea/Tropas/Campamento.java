@@ -40,6 +40,7 @@ public class Campamento extends Edificio {
 
     public void vaciar() {
         this.cantidadActualCampamento = 0;
+        this.capacidadAtaque = 0;
     }
 
     public int getCapacidadMaxima() {
@@ -58,7 +59,7 @@ public class Campamento extends Edificio {
         return this.capacidadMaxima;
     }
 
-    public int setCantidadActualCampamento() {
+    public int setCantidadActualCampamento(int cantidadActualCampamento) {
         return this.cantidadActualCampamento;
     }
 

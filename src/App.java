@@ -187,8 +187,7 @@ public class App {
                     break;
             }
 
-            // limpiar pantalla
-            System.out.println("\033[H\033[2J");
+            clearConsole();
         }
 
         scanner.close();

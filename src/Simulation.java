@@ -80,17 +80,16 @@ public class Simulation {
     }
 
     public void aldeaAtacar() {
-        // TODO falta atacar
-        Event e = new Event(time, 5, "Atacar", (event) -> {
-            // aldea.atacar();
+        Event e = new Event(time, 2, "Resultado de ataque", (event) -> {
+            aldea.atacarRival();
         });
         addEvent(e);
     }
 
     public void aldeaDefender() {
-        // TODO falta defender
-        Event e = new Event(time, 5, "Defender", (event) -> {
-            // aldea.defender();
+
+        Event e = new Event(time, 2, "Resultado de defensa", (event) -> {
+            aldea.defenderDeRival();
         });
         addEvent(e);
     }
@@ -129,7 +128,7 @@ public class Simulation {
         } else {
             System.out.println("No hay eventos futuros");
         }
-        
+
         // recolectores
         System.out.printf("%-34.34s  %-25.25s %-30.30s%n", "Mina: oro " + mina.getAcumulado(),
                 "Tasa de produccion: " + mina.getTasa(), "nivel: " + mina.getNivel());

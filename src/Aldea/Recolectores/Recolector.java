@@ -25,8 +25,10 @@ public class Recolector extends Edificio {
         }
     }
 
-    public void perder() {
-        this.acumulado = this.acumulado - this.tasaPerdida;
+    public int perder() {
+        int perdida = this.capacidadMaxima * this.tasaPerdida / 100;
+        this.acumulado = this.acumulado - perdida;
+        return perdida;
     }
 
     public void upgrade() {

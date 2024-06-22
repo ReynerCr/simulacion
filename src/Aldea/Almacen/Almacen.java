@@ -16,8 +16,10 @@ public class Almacen extends Edificio {
         this.tasaPerdida = 1;
     }
 
-    public void perder() {
-        this.acumulado = this.acumulado - (this.max * ((this.tasaPerdida) / 10));
+    public int perder() {
+        int perdida = this.max * this.tasaPerdida / 100;
+        this.acumulado = this.acumulado - perdida;
+        return perdida;
     }
 
     public void almacenar(int cantidad) {
