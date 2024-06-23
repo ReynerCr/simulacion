@@ -20,14 +20,13 @@ public class Aldea {
         this.edificios = new HashMap<TipoEdificio, Edificio>();
         Recolector extractor = new Recolector(10, TipoEdificio.EXTRACTOR);
         Recolector mina = new Recolector(10, TipoEdificio.MINA);
-        Defensa defensa = new Defensa();
-        Constructor constructor = new Constructor();
         Almacen almacenElixir = new Almacen(TipoEdificio.ALMACEN_ELIXIR);
         Almacen almacenOro = new Almacen(TipoEdificio.ALMACEN_ORO);
+        Constructor constructor = new Constructor();
+        Defensa defensa = new Defensa();
         Campamento campamento = new Campamento();
         Cuartel cuartel = new Cuartel();
         Laboratorio laboratorio = new Laboratorio();
-        
         this.edificios.put(TipoEdificio.EXTRACTOR, extractor);
         this.edificios.put(TipoEdificio.MINA, mina);
         this.edificios.put(TipoEdificio.DEFENSA, defensa);
@@ -45,6 +44,11 @@ public class Aldea {
     }
 
     public Edificio getEdificio(TipoEdificio tipoEdificio) {
+        Edificio edif = edificios.get(tipoEdificio);
+        if (edif == null) {
+            System.out.println("Error: el edificio no existe");
+            return null;
+        }
         return edificios.get(tipoEdificio);
     }
 
@@ -58,10 +62,10 @@ public class Aldea {
         mina.vaciar();
     }
 
+    // Metodo que pone en cola la construccion o mejora de un edificio
     public Edificio upgradeEdificio(TipoEdificio tipoEdificio) {
         Edificio edificio = getEdificio(tipoEdificio);
         Almacen almacen = null;
-
         // chequear si el edificio se puede mejorar
         if (edificio == null) {
             System.out.println("Error: el edificio no existe");
@@ -69,14 +73,10 @@ public class Aldea {
         } else if (edificio.getNivel() == 10) {
             System.out.println("Error: el edificio ya está en el nivel máximo");
             return null;
-        } else if (edificio.getNivel() == 0) {
-            System.out.println("Error: el edificio no ha sido construido");
-            return null;
         } else if (edificio.getOcupado()) {
             System.out.println("Error: el edificio está en proceso de construcción o mejora");
             return null;
         }
-
         // chequear si hay suficiente recurso de consumo para mejorar el edificio
         if (edificio.getTipoAlmacenConsumo() == TipoEdificio.ALMACEN_ORO) {
             almacen = getAlmacenOro();
@@ -85,7 +85,6 @@ public class Aldea {
         } else {
             almacen = getAlmacenOro();
         }
-
         // chequear la disponibilidad de constructores
         Constructor constructor = getConstructor();
         int dispConstructor = constructor.getDisponibilidad();
@@ -93,7 +92,6 @@ public class Aldea {
             System.out.println("Error: la cola de constructores está llena");
             return null;
         }
-
         int precio = edificio.getPrecioMejora();
         boolean mejora = almacen.consumir(precio);
         if (!mejora) {
@@ -102,22 +100,32 @@ public class Aldea {
                             + " para mejorar el edificio");
             return null;
         }
-
         constructor.aumentarCola(1);
         edificio.setOcupado(true);
-
         if (edificio.getTipoEdificio() == TipoEdificio.LABORATORIO) {
             getLaboratorio().aumentarCola();
         }
-
         return edificio;
     }
 
-    public void terminarConstruccion(Edificio edificio) {
+    public void finConstruccionEdificio(Edificio edificio) {
         if (edificio == null || !edificio.getOcupado()) {
             return;
         }
+        edificio.construir();
+        if (edificio.getTipoEdificio() == TipoEdificio.LABORATORIO) {
+            getLaboratorio().aumentarCola();
+            getCampamento().calcularAtaque(edificio.getNivel());
+        }
+        getConstructor().disminuirCola();
+        edificio.setOcupado(false);
+    }
 
+    // Metodo que termina la MEJORA de un edificio
+    public void finMejoraEdificio(Edificio edificio) {
+        if (edificio == null || !edificio.getOcupado()) {
+            return;
+        }
         edificio.upgrade();
         if (edificio.getTipoEdificio() == TipoEdificio.LABORATORIO) {
             getLaboratorio().disminuirCola();
@@ -256,8 +264,6 @@ public class Aldea {
             System.out.println("Gana el defensor");
         }
 
-        // TODO no me cuadra, creo que no he calculado bien los recursos robados
-
         atacante.getAlmacenOro().almacenar(oroRobado);
         atacante.getAlmacenElixir().almacenar(elixirRobado);
 
@@ -266,38 +272,38 @@ public class Aldea {
     }
 
     public Almacen getAlmacenElixir() {
-        return (Almacen) edificios.get(TipoEdificio.ALMACEN_ELIXIR);
+        return (Almacen) getEdificio(TipoEdificio.ALMACEN_ELIXIR);
     }
 
     public Almacen getAlmacenOro() {
-        return (Almacen) edificios.get(TipoEdificio.ALMACEN_ORO);
+        return (Almacen) getEdificio(TipoEdificio.ALMACEN_ORO);
     }
 
     public Recolector getMina() {
-        return (Recolector) edificios.get(TipoEdificio.MINA);
+        return (Recolector) getEdificio(TipoEdificio.MINA);
     }
 
     public Recolector getExtractor() {
-        return (Recolector) edificios.get(TipoEdificio.EXTRACTOR);
+        return (Recolector) getEdificio(TipoEdificio.EXTRACTOR);
     }
 
     public Defensa getDefensa() {
-        return (Defensa) edificios.get(TipoEdificio.DEFENSA);
+        return (Defensa) getEdificio(TipoEdificio.DEFENSA);
     }
 
     public Cuartel getCuartel() {
-        return (Cuartel) edificios.get(TipoEdificio.CUARTEL);
+        return (Cuartel) getEdificio(TipoEdificio.CUARTEL);
     }
 
     public Campamento getCampamento() {
-        return (Campamento) edificios.get(TipoEdificio.CAMPAMENTO);
+        return (Campamento) getEdificio(TipoEdificio.CAMPAMENTO);
     }
 
     public Laboratorio getLaboratorio() {
-        return (Laboratorio) edificios.get(TipoEdificio.LABORATORIO);
+        return (Laboratorio) getEdificio(TipoEdificio.LABORATORIO);
     }
 
     public Constructor getConstructor() {
-        return (Constructor) edificios.get(TipoEdificio.CONSTRUCTOR);
+        return (Constructor) getEdificio(TipoEdificio.CONSTRUCTOR);
     }
 }

@@ -10,7 +10,7 @@ public class Cuartel extends Edificio {
     private int tropasEntrenadas; // solo las entrenadas
 
     public Cuartel() {
-        super(1, 50, 5, TipoEdificio.CUARTEL, TipoEdificio.ALMACEN_ELIXIR);
+        super(0, 50, 5, TipoEdificio.CUARTEL, TipoEdificio.ALMACEN_ELIXIR);
         this.capacidadMaxima = 10 + (nivel * 5);
         this.colaEntrenamiento = 0;
         this.tropasEntrenadas = 0;

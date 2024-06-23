@@ -1,10 +1,10 @@
 import java.util.function.Consumer;
 
 public class Event {
-    int initTime; // time when the event was created
-    int duration; // duration of the event
-    int timeToHappen; // time when the event will happen (initTime + duration)
-    String description; // description of the event
+    int initTime; // tiempo en que el evento fue creado
+    int duration; // duracion del evento
+    int timeToHappen; // tiempo en que el evento ocurrira segun el reloj de simulación (initTime + duration)
+    String description; // descripción del evento
 
     // Consumer para ejecutar la función asociada al evento
     private Consumer<Event> function;

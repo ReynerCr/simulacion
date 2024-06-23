@@ -30,10 +30,9 @@ public class Simulation {
     private int time = 0;
     private int TIME_LIMIT = 15;
 
-    // TODO cambiar el lambda a uno con sentido y luego comprobar si los numeros
-    // generados son exponenciales
-    private Exponential exp;
     private Aldea aldea;
+    private int seed;
+    private boolean preparaDefensa;
 
     private Random random;
 
@@ -49,16 +48,15 @@ public class Simulation {
     private Defensa defensa;
     
 
-    public Simulation(int time, int TIME_LIMIT, int seed, int lambda) {
+    public Simulation(int time, int TIME_LIMIT, int seed, double lambda) {
         this.time = time;
         this.TIME_LIMIT = TIME_LIMIT;
-        this.exp = new Exponential(seed, lambda);
         this.aldea = new Aldea();
         this.random = new Random(seed + 2);
-        
+        this.seed = seed;
+        preparaDefensa = false;
 
-
-        // punteros a los edificios de la aldea
+      // punteros a los edificios de la aldea
         this.mina = aldea.getMina();
         this.extractor = aldea.getExtractor();
         this.almacenOro = aldea.getAlmacenOro();
@@ -81,11 +79,30 @@ public class Simulation {
         }
     }
 
+    // Asigna eventos aleatorios. Solo se asigna defender
+    public boolean asignarEventosAleatorios() {
+        int tiempo = (int) Math.round(StdRandom.poisson(5));
+        if (preparaDefensa == false) {
+            aldeaDefender(tiempo);
+            return true;
+        }
+        return false;
+    }
+
+    public Aldea GetAldea(){
+        return this.aldea;
+    }
+
     public void aldeaEntrenarTropa() {
-        if (!cuartel.aumentarCola()) {
+        if (cuartel.getNivel() == 0 || !cuartel.aumentarCola()) {
             return;
         }
-        Event e = new Event(time, 2, "Entrenar tropa", (event) -> {
+        // la duración del evento de entrenamiento de tropa se calcula con una
+        // distribución exponencial
+        StdRandom.setSeed(seed + 2);
+        int tiempo = (int) Math.round(StdRandom.exponential(0.5));
+
+        Event e = new Event(time, tiempo, "Entrenar tropa", (event) -> {
             cuartel.finalizarEntrenamiento();
             if (campamento.agregar(cuartel)) {
                 campamento.calcularAtaque(laboratorio.getNivel());
@@ -94,17 +111,17 @@ public class Simulation {
         addEvent(e);
     }
 
-    public void aldeaAtacar() {
-        Event e = new Event(time, 1, "Resultado de ataque", (event) -> {
+    public void aldeaAtacar(int tiempo) {
+        Event e = new Event(time, tiempo, "Resultado de ataque", (event) -> {
             aldea.atacarRival(random);
         });
         addEvent(e);
     }
 
-    public void aldeaDefender() {
-
-        Event e = new Event(time, 1, "Resultado de defensa", (event) -> {
+    public void aldeaDefender(int tiempo) {
+        Event e = new Event(time, tiempo, "Resultado de defensa", (event) -> {
             aldea.defenderDeRival(random);
+            this.preparaDefensa = false;
         });
         addEvent(e);
     }
@@ -120,11 +137,19 @@ public class Simulation {
             return;
         }
 
-        Event e = new Event(time, 5, "Finalización de " +
-                (edificio.getNivel() == 0 ? "construcción" : "mejora") + " de edificio",
-                (event) -> {
-                    aldea.terminarConstruccion(edificio);
-                });
+        // TODO mejorar
+        int tiempo = (int) Math.round(StdRandom.exponential(5.0));
+
+        Event e;
+        if (edificio.getNivel() == 0) {
+            e = new Event(time, tiempo, "Construcción de edificio", (event) -> {
+                aldea.finConstruccionEdificio(edificio);
+            });
+        } else {
+            e = new Event(time, tiempo, "Finalización de mejora de edificio", (event) -> {
+                aldea.finMejoraEdificio(edificio);
+            });
+        }
         addEvent(e);
     }
 
@@ -155,24 +180,39 @@ public class Simulation {
                 "nivel " + almacenOro.getNivel());
         System.out.printf("%-34.34s  %-30.30s%n", "Almacen elixir: almacenado " + almacenElixir.getAcumulado(),
                 "nivel " + almacenElixir.getNivel());
-        // laboratorio
-        System.out.printf("%-34.34s  %-30.30s%n",
-                "Laboratorio: " + (laboratorio.getDisponibilidad() == true ? "disponible" : "ocupado"),
-                "nivel de tropas " + laboratorio.getNivel());
-        // tropas
-        System.out.printf("%-34.34s  %-25.25s %-30.30s%n",
-                "Cuartel entrenamiento: cola " + cuartel.getColaEntrenamiento(),
-                "capacidad " + cuartel.getCapacidadMaxima(), "tropas entrenadas " + cuartel.getTropasEntrenadas());
-        System.out.printf("%-34.34s  %-25.25s %-30.30s%n",
-                "Campamento: cantidad " + campamento.getCantidadActualCampamento(),
-                "capacidad " + campamento.getCapacidadMaxima(),
-                "capacidad de ataque " + campamento.getCapacidadAtaque());
+
         // numero de constructores disponibles
         System.out.printf("%-34.34s  %-30.30s%n", "Constructores: disponibles " + constructor.getDisponibilidad(),
                 "total " + constructor.getCapacidad());
-        // defensas
-        System.out.printf("%-34.34s  %-30.30s%n", "Defensas: nivel " + defensa.getNivel(),
-                "capacidad de defensa " + defensa.getCapacidadDefensa());
+
+        if (laboratorio.getNivel() > 0) {
+            // laboratorio
+            System.out.printf("%-34.34s  %-30.30s%n",
+                    "Laboratorio: " + (laboratorio.getDisponibilidad() == true ? "disponible" : "ocupado"),
+                    "nivel de tropas " + laboratorio.getNivel());
+        }
+        if (cuartel.getNivel() > 0) {
+            // tropas
+            System.out.printf("%-34.34s  %-25.25s %-30.30s%n",
+                    "Cuartel entrenamiento: cola " + cuartel.getColaEntrenamiento(),
+                    "capacidad " + cuartel.getCapacidadMaxima(), "tropas entrenadas " + cuartel.getTropasEntrenadas());
+        }
+        if (campamento.getNivel() > 0) {
+            // campamento
+            System.out.printf("%-34.34s  %-25.25s %-30.30s%n",
+                    "Campamento: cantidad " + campamento.getCantidadActualCampamento(),
+                    "capacidad " + campamento.getCapacidadMaxima(),
+                    "capacidad de ataque " + campamento.getCapacidadAtaque());
+        }
+        if (defensa.getNivel() > 0) {
+            // defensas
+            System.out.printf("%-34.34s  %-30.30s%n", "Defensas: nivel " + defensa.getNivel(),
+                    "capacidad de defensa " + defensa.getCapacidadDefensa());
+        }
+    }
+
+    public boolean getPreparaDefensa() {
+        return this.preparaDefensa;
     }
 
     public void skipToNextEvent() {
@@ -203,14 +243,6 @@ public class Simulation {
 
     public int getTimeToNextEvent() {
         return futureEvents.peek().getTimeToHappen();
-    }
-
-    public Exponential getExp() {
-        return exp;
-    }
-
-    public void setExp(Exponential exp) {
-        this.exp = exp;
     }
 
     public Event peekEvent() {
