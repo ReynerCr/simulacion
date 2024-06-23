@@ -14,6 +14,7 @@ public class Aldea {
     // hashmap para almacenar los edificios
     // como se guarda el tipo en el edificio capaz no es necesario esto
     private HashMap<TipoEdificio, Edificio> edificios;
+  
 
     public Aldea() {
         this.edificios = new HashMap<TipoEdificio, Edificio>();

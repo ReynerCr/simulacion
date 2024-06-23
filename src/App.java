@@ -1,10 +1,12 @@
 import java.util.Scanner;
 
 import Aldea.TipoEdificio;
+import java.util.concurrent.CountDownLatch;
 
 public class App {
     private static Scanner scanner = new Scanner(System.in);
-
+    public static CountDownLatch latch;
+   
     // Nota: no funciona en todos los sistemas operativos
     // ni en todos los terminales
     public static void clearConsole() {
@@ -12,12 +14,16 @@ public class App {
         System.out.println("\033[H\033[2J");
     }
 
+   
     public static void menuAldea(Simulation sim) {
         clearConsole();
 
         char resp = ' ';
         
         while (resp != 'p') {
+
+            resp = ' ';
+
             sim.printStatus();
 
             System.out.println("---------------------- Menú de la aldea ----------------------");
@@ -34,7 +40,7 @@ public class App {
             System.out.println("'5' -> defender de otra aldea (ELIMINAR)");
             System.out.println("'p' -> volver al menú principal");
             
-            try {
+            try {     
                 resp = scanner.next().charAt(0);
             } catch (Exception e) {
                 System.out.println("Error al leer la entrada");
@@ -128,10 +134,15 @@ public class App {
             System.out.println(lista1[i] + ", ");
         } */
 
+
+       
+        
+
         Simulation sim = new Simulation(initTime, TIME_LIMIT, seed, lambda);
-        
+        Main main = new Main(sim);
         char response = ' ';
-        
+
+
         while (sim.getTime() < TIME_LIMIT) {
             // ejecutar eventos que deben ocurrir en este instante
             sim.runEvents();
@@ -140,7 +151,7 @@ public class App {
             
             // mostrar el estado de la simulación
             sim.printStatus();
-
+            
             // Instrucciones para el usuario
             if (response != 'o') {
                 System.out.println("------------------------ Menú general ------------------------");
@@ -152,6 +163,7 @@ public class App {
             }   
             try {
                 if (response != 'o') {
+                    
                     response = scanner.next().charAt(0);
                 }
             } catch (Exception e) {
@@ -174,6 +186,8 @@ public class App {
                     break;
                 case 'j':
                     sim.advanceOneStep();
+                    main.Update();
+                    scanner.next().charAt(0);
                     break;
                 case 'a':
                     menuAldea(sim);
