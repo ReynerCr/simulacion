@@ -77,7 +77,7 @@ public class Simulation {
 
     // Asigna eventos aleatorios. Solo se asigna defender
     public boolean asignarEventosAleatorios() {
-        int tiempo = (int) Math.round(StdRandom.poisson(5));
+        int tiempo = (int) Math.round(StdRandom.poisson(10));
         if (preparaDefensa == false) {
             aldeaDefender(tiempo);
             return true;
@@ -133,7 +133,6 @@ public class Simulation {
             return;
         }
 
-        // TODO mejorar
         int tiempo = (int) Math.round(StdRandom.exponential(5.0));
 
         Event e;
@@ -222,6 +221,13 @@ public class Simulation {
 
     public void advanceOneStep() {
         aldea.producir();
+        if (!preparaDefensa) {
+            // 30% de probabilidad de que se prepare la defensa
+            double probabilidad = random.nextDouble();
+            if (probabilidad < 0.3) {
+                asignarEventosAleatorios();
+            }
+        }
         ++time;
     }
 

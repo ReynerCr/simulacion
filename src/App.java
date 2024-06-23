@@ -27,7 +27,6 @@ public class App {
             System.out.printf("%-34.34s  %-34.34s%n","'l' -> mejorar tropa laboratorio","'c' -> mejorar el cuartel");
             System.out.printf("%-34.34s  %-34.34s%n","'v' -> mejorar campamento","'b' -> mejorar constructor");
             System.out.printf("%-34.34s  %-34.34s%n","'d' -> mejorar defensas","'a' -> atacar a otra aldea");
-            System.out.println("'5' -> defender de otra aldea (ELIMINAR)");
             System.out.println("'p' -> volver al menú principal");
             
             try {     
