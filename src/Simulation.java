@@ -47,6 +47,7 @@ public class Simulation {
     private Constructor constructor;
     private Laboratorio laboratorio;
     private Defensa defensa;
+    
 
     public Simulation(int time, int TIME_LIMIT, int seed, int lambda) {
         this.time = time;
@@ -54,6 +55,8 @@ public class Simulation {
         this.exp = new Exponential(seed, lambda);
         this.aldea = new Aldea();
         this.random = new Random(seed + 2);
+        
+
 
         // punteros a los edificios de la aldea
         this.mina = aldea.getMina();
@@ -67,6 +70,10 @@ public class Simulation {
         this.defensa = aldea.getDefensa();
     }
 
+    public Aldea GetAldea(){
+        return this.aldea;
+    }
+    
     private void calcDiffResources() {
         int deltaTiempo = getTimeToNextEvent();
         for (int i = time; i < deltaTiempo; i++) {
@@ -124,6 +131,7 @@ public class Simulation {
     public void aldeaRecolectar() {
         Event e = new Event(time, 0, "Recolectar recursos", (event) -> {
             aldea.recolectar();
+            
         });
         addEvent(e);
     }
