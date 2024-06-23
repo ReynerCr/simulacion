@@ -263,8 +263,6 @@ public class Aldea {
             System.out.println("Gana el defensor");
         }
 
-        // TODO no me cuadra, creo que no he calculado bien los recursos robados
-
         atacante.getAlmacenOro().almacenar(oroRobado);
         atacante.getAlmacenElixir().almacenar(elixirRobado);
 
