@@ -53,7 +53,6 @@ public class Main extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 value = 'v';
-                System.out.println("Hola");
             }
         });
     }
@@ -78,7 +77,6 @@ public class Main extends JPanel {
     }
 
     public void Update(){
-        System.out.println(aldea.getMina().getAcumulado());
         mina.SetOro(aldea.getMina().getAcumulado());
         mina.SetNivel(aldea.getMina().getNivel());
         almacenOro.setCantidad(aldea.getAlmacenOro().getAcumulado());

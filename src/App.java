@@ -13,30 +13,20 @@ public class App {
         System.out.print("\n\n");
         System.out.println("\033[H\033[2J");
     }
-
    
     public static void menuAldea(Simulation sim) {
         clearConsole();
-
         char resp = ' ';
-        
         while (resp != 'p') {
-
             resp = ' ';
-
             sim.printStatus();
-
             System.out.println("---------------------- Menú de la aldea ----------------------");
             System.out.printf("%-34.34s  %-34.34s%n","'r' -> recolectar recursos","'t' -> entrenar una tropa");
             System.out.printf("%-34.34s  %-34.34s%n","'e' -> mejorar extractor","'m' -> mejorar mina");
             System.out.printf("%-34.34s  %-34.34s%n","'x' -> mejorar almacen oro","'z' -> mejorar almacen elixir");
-
-
             System.out.printf("%-34.34s  %-34.34s%n","'l' -> mejorar tropa laboratorio","'c' -> mejorar el cuartel");
             System.out.printf("%-34.34s  %-34.34s%n","'v' -> mejorar campamento","'b' -> mejorar constructor");
-
             System.out.printf("%-34.34s  %-34.34s%n","'d' -> mejorar defensas","'a' -> atacar a otra aldea");
-
             System.out.println("'5' -> defender de otra aldea (ELIMINAR)");
             System.out.println("'p' -> volver al menú principal");
             
@@ -76,7 +66,7 @@ public class App {
                     break;
                 case 'a':
                     System.out.println("Atacando a otra aldea...");
-                    sim.aldeaAtacar();
+                    sim.aldeaAtacar(0);
                     break;
                 case 'l':
                     System.out.println("Mejorando tropa en el laboratorio...");
@@ -89,11 +79,6 @@ public class App {
                     case 'v':
                     System.out.println("Mejorando campamento...");
                     sim.aldeaUpgradeEdificio(TipoEdificio.CAMPAMENTO);
-                    break;
-                case '5':
-                    // TODO eliminar cuando ya haya aleatoriedad
-                    System.out.println("Defendiendo de otra aldea...");
-                    sim.aldeaDefender();
                     break;
                 case 'b':
                     System.out.println("Mejorando constructor...");
@@ -121,34 +106,15 @@ public class App {
         int lambda = 1;
         int initTime = 0;
         int TIME_LIMIT = 100; // tiempo limite de simulación
-         // tiempo actual
-
-        /* //comprobar generador de numeros aleatorios
-        double lista1[] = new double[1000];
-        for (int i = 0; i < 1000; ++i) {
-            lista1[i] = exp.getNext();
-        }
-
-        // Determinar si los numeros generados son exponenciales
-        for (int i = 0; i < 1000; ++i) {
-            System.out.println(lista1[i] + ", ");
-        } */
-
-
-       
-        
 
         Simulation sim = new Simulation(initTime, TIME_LIMIT, seed, lambda);
         Main main = new Main(sim);
         char response = ' ';
 
-
         while (sim.getTime() < TIME_LIMIT) {
             // ejecutar eventos que deben ocurrir en este instante
             sim.runEvents();
 
-            // Con el generador de numeros aleatorios, determinar si se generará un nuevo evento
-            
             // mostrar el estado de la simulación
             sim.printStatus();
             
@@ -187,7 +153,6 @@ public class App {
                 case 'j':
                     sim.advanceOneStep();
                     main.Update();
-                    scanner.next().charAt(0);
                     break;
                 case 'a':
                     menuAldea(sim);

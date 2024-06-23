@@ -68,10 +68,6 @@ public class Simulation {
         this.defensa = aldea.getDefensa();
     }
 
-    public Aldea GetAldea(){
-        return this.aldea;
-    }
-    
     private void calcDiffResources() {
         int deltaTiempo = getTimeToNextEvent();
         for (int i = time; i < deltaTiempo; i++) {
