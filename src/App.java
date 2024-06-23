@@ -158,8 +158,12 @@ public class App {
                     menuAldea(sim);
                     break;
                 case 'o':
-                    sim.advanceOneStep();
-                    Thread.sleep(1000);
+                    response = ' ';
+                    /* No se implemento la creación de eventos automáticos 
+                        sim.advanceOneStep();
+                        main.Update();
+                        Thread.sleep(1000);
+                    */
                     break;
                 default:
                     System.out.println("Comando no reconocido");
