@@ -1,6 +1,6 @@
 /* 
 StdRandom.java
-
+Fuente: https://introcs.cs.princeton.edu/java/22library/StdRandom.java.html
 
 Below is the syntax highlighted version of StdRandom.java from § Standard Libraries.   Here is the Javadoc.
 

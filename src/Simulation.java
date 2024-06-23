@@ -30,10 +30,9 @@ public class Simulation {
     private int time = 0;
     private int TIME_LIMIT = 15;
 
-    // TODO cambiar el lambda a uno con sentido y luego comprobar si los numeros
-    // generados son exponenciales
-    private Exponential exp;
     private Aldea aldea;
+    private int seed;
+    private boolean preparaDefensa;
 
     private Random random;
 
@@ -48,12 +47,13 @@ public class Simulation {
     private Laboratorio laboratorio;
     private Defensa defensa;
 
-    public Simulation(int time, int TIME_LIMIT, int seed, int lambda) {
+    public Simulation(int time, int TIME_LIMIT, int seed, double lambda) {
         this.time = time;
         this.TIME_LIMIT = TIME_LIMIT;
-        this.exp = new Exponential(seed, lambda);
         this.aldea = new Aldea();
         this.random = new Random(seed + 2);
+        this.seed = seed;
+        preparaDefensa = false;
 
         // punteros a los edificios de la aldea
         this.mina = aldea.getMina();
@@ -74,11 +74,30 @@ public class Simulation {
         }
     }
 
+    // Asigna eventos aleatorios. Solo se asigna defender
+    public boolean asignarEventosAleatorios() {
+        int tiempo = (int) Math.round(StdRandom.poisson(5));
+        if (preparaDefensa == false) {
+            aldeaDefender(tiempo);
+            return true;
+        }
+        return false;
+    }
+
+    public Aldea GetAldea(){
+        return this.aldea;
+    }
+
     public void aldeaEntrenarTropa() {
-        if (!cuartel.aumentarCola()) {
+        if (cuartel.getNivel() == 0 || !cuartel.aumentarCola()) {
             return;
         }
-        Event e = new Event(time, 2, "Entrenar tropa", (event) -> {
+        // la duración del evento de entrenamiento de tropa se calcula con una
+        // distribución exponencial
+        StdRandom.setSeed(seed + 2);
+        int tiempo = (int) Math.round(StdRandom.exponential(0.5));
+
+        Event e = new Event(time, tiempo, "Entrenar tropa", (event) -> {
             cuartel.finalizarEntrenamiento();
             if (campamento.agregar(cuartel)) {
                 campamento.calcularAtaque(laboratorio.getNivel());
@@ -87,17 +106,17 @@ public class Simulation {
         addEvent(e);
     }
 
-    public void aldeaAtacar() {
-        Event e = new Event(time, 1, "Resultado de ataque", (event) -> {
+    public void aldeaAtacar(int tiempo) {
+        Event e = new Event(time, tiempo, "Resultado de ataque", (event) -> {
             aldea.atacarRival(random);
         });
         addEvent(e);
     }
 
-    public void aldeaDefender() {
-
-        Event e = new Event(time, 1, "Resultado de defensa", (event) -> {
+    public void aldeaDefender(int tiempo) {
+        Event e = new Event(time, tiempo, "Resultado de defensa", (event) -> {
             aldea.defenderDeRival(random);
+            this.preparaDefensa = false;
         });
         addEvent(e);
     }
@@ -113,13 +132,16 @@ public class Simulation {
             return;
         }
 
+        // TODO mejorar
+        int tiempo = (int) Math.round(StdRandom.exponential(5.0));
+
         Event e;
         if (edificio.getNivel() == 0) {
-            e = new Event(time, 5, "Construcción de edificio", (event) -> {
+            e = new Event(time, tiempo, "Construcción de edificio", (event) -> {
                 aldea.finConstruccionEdificio(edificio);
             });
         } else {
-            e = new Event(time, 5, "Finalización de mejora de edificio", (event) -> {
+            e = new Event(time, tiempo, "Finalización de mejora de edificio", (event) -> {
                 aldea.finMejoraEdificio(edificio);
             });
         }
@@ -183,6 +205,10 @@ public class Simulation {
         }
     }
 
+    public boolean getPreparaDefensa() {
+        return this.preparaDefensa;
+    }
+
     public void skipToNextEvent() {
         calcDiffResources();
         time = this.getTimeToNextEvent();
@@ -211,14 +237,6 @@ public class Simulation {
 
     public int getTimeToNextEvent() {
         return futureEvents.peek().getTimeToHappen();
-    }
-
-    public Exponential getExp() {
-        return exp;
-    }
-
-    public void setExp(Exponential exp) {
-        this.exp = exp;
     }
 
     public Event peekEvent() {
