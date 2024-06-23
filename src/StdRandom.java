@@ -4,9 +4,6 @@ Fuente: https://introcs.cs.princeton.edu/java/22library/StdRandom.java.html
 
 Below is the syntax highlighted version of StdRandom.java from § Standard Libraries.   Here is the Javadoc.
 
-/* Copyright © 2000–2022, Robert Sedgewick and Kevin Wayne.
-Last updated: Thu Jan 18 01:20:26 PM EST 2024. */
-
 /******************************************************************************
  *  Compilation:  javac StdRandom.java
  *  Execution:    java StdRandom
@@ -688,4 +685,5 @@ public final class StdRandom {
     }
 }
 
-
+/* Copyright © 2000–2022, Robert Sedgewick and Kevin Wayne.
+Last updated: Thu Jan 18 01:20:26 PM EST 2024. */
